@@ -120,22 +120,14 @@
     [self.imageOutput setOutputSettings:outputSettings];
     //判断输入输出设备是否可用
     if ([self.session canAddInput:self.deviceInput]) {
-        
         [self.session addInput:self.deviceInput];
-        
     }
-    
     if ([self.session canAddOutput:self.imageOutput]) {
-        
         [self.session addOutput:self.imageOutput];
     }
-    
     //初始化预览图层
     self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
-    
-    //设置图层的填充样式
-    
-    /**
+    /** 设置图层的填充样式
      *  AVLayerVideoGravityResize,       // 非均匀模式。两个维度完全填充至整个视图区域
         AVLayerVideoGravityResizeAspect,  // 等比例填充，直到一个维度到达区域边界
         AVLayerVideoGravityResizeAspectFill, // 等比例填充，直到填充满整个视图区域，其中一个维度的部分区域会被裁剪
@@ -145,7 +137,7 @@
     //设置图层的frame
     CGFloat viewWidth = self.view.frame.size.width;
     CGFloat viewHeight = self.view.frame.size.height - 64;
-    self.previewLayer.frame = CGRectMake(0, 0,viewWidth, viewHeight);
+    self.previewLayer.frame = CGRectMake(0, 40,viewWidth, viewHeight);
     [self.view.layer addSublayer:self.previewLayer];
     
     UIButton *button = [[UIButton alloc] init];
