@@ -41,6 +41,21 @@
  */
 @property (nonatomic,strong)AVCaptureVideoPreviewLayer *previewLayer;
 
+/**
+ *  session通过AVCaptureConnection连接AVCaptureStillImageOutput进行图片输出
+ */
+
+@property(nonatomic,strong) AVCaptureConnection *connection;
+
+/**
+ *  记录开始的缩放比例
+ */
+@property(nonatomic,assign)CGFloat beginGestureScale;
+/**
+ *  最后的缩放比例
+ */
+@property(nonatomic,assign)CGFloat effectiveScale;
+
 @end
 
 @implementation CCPTakePicturesController
@@ -105,14 +120,96 @@
     
     //初始化预览图层
     self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
-    //设置图层的显示样式
-    self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    
+    //设置图层的填充样式
+    
+    /**
+     *  AVLayerVideoGravityResize,       // 非均匀模式。两个维度完全填充至整个视图区域
+        AVLayerVideoGravityResizeAspect,  // 等比例填充，直到一个维度到达区域边界
+        AVLayerVideoGravityResizeAspectFill, // 等比例填充，直到填充满整个视图区域，其中一个维度的部分区域会被裁剪
+     */
+    
+    
+    self.previewLayer.videoGravity = AVLayerVideoGravityResize;
     //设置图层的frame
     CGFloat viewWidth = self.view.frame.size.width;
     CGFloat viewHeight = self.view.frame.size.height - 64;
     self.previewLayer.frame = CGRectMake(0, 0,viewWidth, viewHeight);
     [self.view.layer addSublayer:self.previewLayer];
     
+    UIButton *button = [[UIButton alloc] init];
+    
+    [button setTitle:@"PHOTO" forState:UIControlStateNormal];
+    
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    [button setBackgroundColor:[UIColor purpleColor]];
+    
+    button.frame = CGRectMake(0, viewHeight, viewWidth, 64);
+    [button addTarget:self action:@selector(clickPHOTO) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button];
+    
+}
+
+- (void)clickPHOTO {
+    
+    self.connection = [self.imageOutput connectionWithMediaType:AVMediaTypeVideo];
+    //UIDeviceOrientation 获取机器硬件的当前旋转方向   这个你只能取值 不能设置
+    //需要注意的是如果手机手动锁定了屏幕，则不能判断旋转方向
+    UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
+    
+    UIInterfaceOrientation sataus=[UIApplication sharedApplication].statusBarOrientation;
+    
+    NSLog(@"------%ld",(long)curDeviceOrientation);
+    //获取输出视图的展示方向
+    AVCaptureVideoOrientation avcaptureOrientation = [self avOrientationForDeviceOrientation:sataus];
+     NSLog(@"+++++++%ld",(long)sataus);
+    
+    
+    [self.connection setVideoOrientation:avcaptureOrientation];
+    //[self.connection setVideoScaleAndCropFactor:self.effectiveScale];
+    
+    [self.imageOutput captureStillImageAsynchronouslyFromConnection:self.connection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
+        
+        NSData *jpegData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
+        
+        CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault,imageDataSampleBuffer,kCMAttachmentMode_ShouldPropagate);
+        
+        ALAuthorizationStatus author = [ALAssetsLibrary authorizationStatus];
+        if (author == ALAuthorizationStatusRestricted || author == ALAuthorizationStatusDenied){
+            //无权限
+            return ;
+        }
+        
+        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+        [library writeImageDataToSavedPhotosAlbum:jpegData metadata:(__bridge id)attachments completionBlock:^(NSURL *assetURL, NSError *error) {
+            
+        }];
+        
+    }];
+    
+    
+}
+
+- (AVCaptureVideoOrientation)avOrientationForDeviceOrientation:(UIInterfaceOrientation)deviceOrientation
+{
+    AVCaptureVideoOrientation result = (AVCaptureVideoOrientation)deviceOrientation;
+    if ( deviceOrientation == UIDeviceOrientationLandscapeLeft )
+        result = AVCaptureVideoOrientationLandscapeRight;
+    else if ( deviceOrientation == UIDeviceOrientationLandscapeRight )
+        result = AVCaptureVideoOrientationLandscapeLeft;
+    return result;
+}
+
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    
+    return UIInterfaceOrientationMaskAllButUpsideDown;
+}
+
+-(BOOL)shouldAutorotate
+{
+    return YES;
 }
 
 @end
