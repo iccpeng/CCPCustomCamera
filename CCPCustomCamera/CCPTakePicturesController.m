@@ -12,6 +12,8 @@
 //处理相册的系统框架
 #import <AssetsLibrary/AssetsLibrary.h>
 
+#import "MotionOrientation.h"
+
 @interface CCPTakePicturesController ()
 
 //创建相机相关的属性
@@ -45,7 +47,12 @@
  *  session通过AVCaptureConnection连接AVCaptureStillImageOutput进行图片输出
  */
 
-@property(nonatomic,strong) AVCaptureConnection *connection;
+@property (nonatomic,strong) AVCaptureConnection *connection;
+
+/**
+ *  记录屏幕的旋转方向
+ */
+@property (nonatomic,assign) UIDeviceOrientation deviceOrientation;
 
 /**
  *  记录开始的缩放比例
@@ -66,6 +73,11 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    
+    [[MotionOrientation sharedInstance] startAccelerometerUpdates];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(motionDeviceOrientationChanged:) name:MotionOrientationChangedNotification object:nil];
     
     [self makeUI];
 }
@@ -154,17 +166,29 @@
 - (void)clickPHOTO {
     
     self.connection = [self.imageOutput connectionWithMediaType:AVMediaTypeVideo];
-    //UIDeviceOrientation 获取机器硬件的当前旋转方向   这个你只能取值 不能设置
-    //需要注意的是如果手机手动锁定了屏幕，则不能判断旋转方向
+   
+    /**
+     *   UIDeviceOrientation 获取机器硬件的当前旋转方向
+         需要注意的是如果手机手动锁定了屏幕，则不能判断旋转方向
+     */
     UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
-    
-    UIInterfaceOrientation sataus=[UIApplication sharedApplication].statusBarOrientation;
-    
     NSLog(@"------%ld",(long)curDeviceOrientation);
-    //获取输出视图的展示方向
-    AVCaptureVideoOrientation avcaptureOrientation = [self avOrientationForDeviceOrientation:sataus];
-     NSLog(@"+++++++%ld",(long)sataus);
     
+    /**
+     *  UIInterfaceOrientation 获取视图的当前旋转方向 
+        需要注意的是只有项目支持横竖屏切换才能监听到旋转方向
+     */
+    UIInterfaceOrientation sataus=[UIApplication sharedApplication].statusBarOrientation;
+    NSLog(@"+++++++%ld",(long)sataus);
+    
+    
+    /**
+     *  为了实现在锁屏状态下能够获取屏幕的旋转方向，这里通过使用 CoreMotion 框架（加速计）进行屏幕方向的判断
+       self.deviceOrientation = [MotionOrientation sharedInstance].deviceOrientation]
+     */
+    
+    //获取输出视图的展示方向
+    AVCaptureVideoOrientation avcaptureOrientation = [self avOrientationForDeviceOrientation: self.deviceOrientation];
     
     [self.connection setVideoOrientation:avcaptureOrientation];
     //[self.connection setVideoScaleAndCropFactor:self.effectiveScale];
@@ -188,10 +212,9 @@
         
     }];
     
-    
 }
 
-- (AVCaptureVideoOrientation)avOrientationForDeviceOrientation:(UIInterfaceOrientation)deviceOrientation
+- (AVCaptureVideoOrientation)avOrientationForDeviceOrientation:(UIDeviceOrientation)deviceOrientation
 {
     AVCaptureVideoOrientation result = (AVCaptureVideoOrientation)deviceOrientation;
     if ( deviceOrientation == UIDeviceOrientationLandscapeLeft )
@@ -202,14 +225,15 @@
 }
 
 
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    
-    return UIInterfaceOrientationMaskAllButUpsideDown;
+- (void)motionDeviceOrientationChanged:(NSNotification *)notification
+
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        self.deviceOrientation = [MotionOrientation sharedInstance].deviceOrientation;
+   
+    });
 }
 
--(BOOL)shouldAutorotate
-{
-    return YES;
-}
 
 @end

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2129B34C1D93717C0074B7D6 /* CCPTakePicturesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2129B34B1D93717C0074B7D6 /* CCPTakePicturesController.m */; };
+		2129B3631D93D08B0074B7D6 /* MotionOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2129B3621D93D08B0074B7D6 /* MotionOrientation.m */; };
 		217172CE1D92656A00B89D7F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 217172CD1D92656A00B89D7F /* main.m */; };
 		217172D11D92656A00B89D7F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 217172D01D92656A00B89D7F /* AppDelegate.m */; };
 		217172D41D92656A00B89D7F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 217172D31D92656A00B89D7F /* ViewController.m */; };
@@ -38,6 +39,8 @@
 /* Begin PBXFileReference section */
 		2129B34A1D93717C0074B7D6 /* CCPTakePicturesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPTakePicturesController.h; sourceTree = "<group>"; };
 		2129B34B1D93717C0074B7D6 /* CCPTakePicturesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPTakePicturesController.m; sourceTree = "<group>"; };
+		2129B3611D93D08B0074B7D6 /* MotionOrientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MotionOrientation.h; sourceTree = "<group>"; };
+		2129B3621D93D08B0074B7D6 /* MotionOrientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MotionOrientation.m; sourceTree = "<group>"; };
 		217172C91D92656A00B89D7F /* CCPCustomCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CCPCustomCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		217172CD1D92656A00B89D7F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		217172CF1D92656A00B89D7F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -108,6 +111,8 @@
 				217172D01D92656A00B89D7F /* AppDelegate.m */,
 				2129B34A1D93717C0074B7D6 /* CCPTakePicturesController.h */,
 				2129B34B1D93717C0074B7D6 /* CCPTakePicturesController.m */,
+				2129B3611D93D08B0074B7D6 /* MotionOrientation.h */,
+				2129B3621D93D08B0074B7D6 /* MotionOrientation.m */,
 				217172D21D92656A00B89D7F /* ViewController.h */,
 				217172D31D92656A00B89D7F /* ViewController.m */,
 				217172D51D92656A00B89D7F /* Main.storyboard */,
@@ -279,6 +284,7 @@
 				2129B34C1D93717C0074B7D6 /* CCPTakePicturesController.m in Sources */,
 				217172D41D92656A00B89D7F /* ViewController.m in Sources */,
 				217172D11D92656A00B89D7F /* AppDelegate.m in Sources */,
+				2129B3631D93D08B0074B7D6 /* MotionOrientation.m in Sources */,
 				217172CE1D92656A00B89D7F /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
