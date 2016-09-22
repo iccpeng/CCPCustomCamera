@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2129B34C1D93717C0074B7D6 /* CCPTakePicturesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2129B34B1D93717C0074B7D6 /* CCPTakePicturesController.m */; };
 		217172CE1D92656A00B89D7F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 217172CD1D92656A00B89D7F /* main.m */; };
 		217172D11D92656A00B89D7F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 217172D01D92656A00B89D7F /* AppDelegate.m */; };
 		217172D41D92656A00B89D7F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 217172D31D92656A00B89D7F /* ViewController.m */; };
@@ -35,6 +36,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2129B34A1D93717C0074B7D6 /* CCPTakePicturesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPTakePicturesController.h; sourceTree = "<group>"; };
+		2129B34B1D93717C0074B7D6 /* CCPTakePicturesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPTakePicturesController.m; sourceTree = "<group>"; };
 		217172C91D92656A00B89D7F /* CCPCustomCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CCPCustomCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		217172CD1D92656A00B89D7F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		217172CF1D92656A00B89D7F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -103,6 +106,8 @@
 			children = (
 				217172CF1D92656A00B89D7F /* AppDelegate.h */,
 				217172D01D92656A00B89D7F /* AppDelegate.m */,
+				2129B34A1D93717C0074B7D6 /* CCPTakePicturesController.h */,
+				2129B34B1D93717C0074B7D6 /* CCPTakePicturesController.m */,
 				217172D21D92656A00B89D7F /* ViewController.h */,
 				217172D31D92656A00B89D7F /* ViewController.m */,
 				217172D51D92656A00B89D7F /* Main.storyboard */,
@@ -271,6 +276,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2129B34C1D93717C0074B7D6 /* CCPTakePicturesController.m in Sources */,
 				217172D41D92656A00B89D7F /* ViewController.m in Sources */,
 				217172D11D92656A00B89D7F /* AppDelegate.m in Sources */,
 				217172CE1D92656A00B89D7F /* main.m in Sources */,
@@ -499,6 +505,7 @@
 				217172F81D92656A00B89D7F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		217172F91D92656A00B89D7F /* Build configuration list for PBXNativeTarget "CCPCustomCameraTests" */ = {
 			isa = XCConfigurationList;
@@ -507,6 +514,7 @@
 				217172FB1D92656A00B89D7F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		217172FC1D92656A00B89D7F /* Build configuration list for PBXNativeTarget "CCPCustomCameraUITests" */ = {
 			isa = XCConfigurationList;
@@ -515,6 +523,7 @@
 				217172FE1D92656A00B89D7F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
