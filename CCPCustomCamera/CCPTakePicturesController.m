@@ -141,7 +141,6 @@
         AVLayerVideoGravityResizeAspectFill, // 等比例填充，直到填充满整个视图区域，其中一个维度的部分区域会被裁剪
      */
     
-    
     self.previewLayer.videoGravity = AVLayerVideoGravityResize;
     //设置图层的frame
     CGFloat viewWidth = self.view.frame.size.width;
@@ -166,26 +165,30 @@
 - (void)clickPHOTO {
     
     self.connection = [self.imageOutput connectionWithMediaType:AVMediaTypeVideo];
-   
-    /**
-     *   UIDeviceOrientation 获取机器硬件的当前旋转方向
-         需要注意的是如果手机手动锁定了屏幕，则不能判断旋转方向
-     */
-    UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
-    NSLog(@"------%ld",(long)curDeviceOrientation);
     
     /**
-     *  UIInterfaceOrientation 获取视图的当前旋转方向 
-        需要注意的是只有项目支持横竖屏切换才能监听到旋转方向
+     *   UIDeviceOrientation 获取机器硬件的当前旋转方向
+     需要注意的是如果手机手动锁定了屏幕，则不能判断旋转方向
+     */
+    UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
+    NSLog(@"-------%ld",(long)curDeviceOrientation);
+    
+    /**
+     *  UIInterfaceOrientation 获取视图的当前旋转方向
+     需要注意的是只有项目支持横竖屏切换才能监听到旋转方向
      */
     UIInterfaceOrientation sataus=[UIApplication sharedApplication].statusBarOrientation;
     NSLog(@"+++++++%ld",(long)sataus);
     
-    
     /**
      *  为了实现在锁屏状态下能够获取屏幕的旋转方向，这里通过使用 CoreMotion 框架（加速计）进行屏幕方向的判断
-       self.deviceOrientation = [MotionOrientation sharedInstance].deviceOrientation]
+     self.deviceOrientation = [MotionOrientation sharedInstance].deviceOrientation]
+     
+     在这里用到了第三方开源框架 MotionOrientation 对作者表示衷心的感谢
+     框架地址： GitHub:https://github.com/tastyone/MotionOrientation
+     
      */
+    NSLog(@"********%ld",(long)self.deviceOrientation);
     
     //获取输出视图的展示方向
     AVCaptureVideoOrientation avcaptureOrientation = [self avOrientationForDeviceOrientation: self.deviceOrientation];
@@ -231,9 +234,14 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         
         self.deviceOrientation = [MotionOrientation sharedInstance].deviceOrientation;
-   
+        
     });
 }
 
+//设置当前页面支持横竖屏，DEMO默认不支持横竖屏
+//-(UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+//{
+//    return UIInterfaceOrientationMaskAllButUpsideDown;
+//}
 
 @end
