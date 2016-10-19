@@ -111,6 +111,7 @@
     self.device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     //初始化session
     self.session = [[AVCaptureSession alloc] init];
+    self.session.sessionPreset = AVCaptureSessionPresetPhoto;
     //初始化输入设备
     self.deviceInput = [AVCaptureDeviceInput deviceInputWithDevice:self.device error:&error];
     //初始化照片输出对象
@@ -199,11 +200,35 @@
             //无权限
             return ;
         }
+        //原图0
+        UIImage *image = [UIImage imageWithData:jpegData];
         
-        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-        [library writeImageDataToSavedPhotosAlbum:jpegData metadata:(__bridge id)attachments completionBlock:^(NSURL *assetURL, NSError *error) {
-            
-        }];
+        UIImageWriteToSavedPhotosAlbum(image, self, nil, NULL);
+
+        
+        UIImage *imageFulllll = [self cutImage:image];
+        
+        UIImageWriteToSavedPhotosAlbum(imageFulllll, self, nil, NULL);
+        
+        
+        UIImage *imageFULL = [self getSnapshotImage];
+        
+        
+//        UIImageWriteToSavedPhotosAlbum(imageFULL, self, nil, NULL);
+
+        
+        
+        //图片的裁剪
+//        [self didClickButton:image];
+        
+//        CGRect rect = CGRectMake(0, 40, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 104);
+        
+//        [self getImageByCuttingImage:image Rect:rect];
+        
+//        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+//        [library writeImageDataToSavedPhotosAlbum:jpegData metadata:(__bridge id)attachments completionBlock:^(NSURL *assetURL, NSError *error) {
+//            
+//        }];
         
     }];
     
@@ -220,6 +245,7 @@
 }
 
 
+
 - (void)motionDeviceOrientationChanged:(NSNotification *)notification
 
 {
@@ -230,6 +256,119 @@
     });
 }
 
+
+
+- (UIImage *)cutImage:(UIImage *)srcImg {
+    
+    
+    
+    //注意：这个rect是指横屏时的rect，即屏幕对着自己，home建在右边
+    CGRect rect = CGRectMake((srcImg.size.height / CGRectGetHeight(self.view.frame)) * 40, 0, srcImg.size.width * 1.33, srcImg.size.width);
+    CGImageRef subImageRef = CGImageCreateWithImageInRect(srcImg.CGImage, rect);
+    CGFloat subWidth = CGImageGetWidth(subImageRef);
+    CGFloat subHeight = CGImageGetHeight(subImageRef);
+    CGRect smallBounds = CGRectMake(0, 0, subWidth, subHeight);
+    //旋转后，画出来
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    transform = CGAffineTransformTranslate(transform, 0, subWidth);
+    transform = CGAffineTransformRotate(transform, -M_PI_2);
+    CGContextRef ctx = CGBitmapContextCreate(NULL, subHeight, subWidth,
+                                             CGImageGetBitsPerComponent(subImageRef), 0,
+                                             CGImageGetColorSpace(subImageRef),
+                                             CGImageGetBitmapInfo(subImageRef));
+    CGContextConcatCTM(ctx, transform);
+    CGContextDrawImage(ctx, smallBounds, subImageRef);
+    CGImageRef cgimg = CGBitmapContextCreateImage(ctx);
+    UIImage *img = [UIImage imageWithCGImage:cgimg];
+    
+    CGContextRelease(ctx);
+    CGImageRelease(cgimg);
+    return img;
+    
+}
+
+
+- (void)didClickButton:(UIImage *)img {
+    
+    // 1.先加载原图
+    
+    // 2.创建(开启)一个和原图一样大小的"位图上下文"
+    
+    //参数1 ->图形上下文的大小(单位是点)参数2 ->是否不透明参数3 ->一个点表示几个像素
+    
+    UIGraphicsBeginImageContextWithOptions(img.size,YES,0.0);
+    
+    // 3.获取刚才开启的图形上下文
+    
+    CGContextRef ctx =UIGraphicsGetCurrentContext();
+    
+    // 4.执行裁剪操作
+    
+    UIBezierPath *path = [UIBezierPath bezierPathWithRect:CGRectMake(0, 40, img.size.width,img.size.height - 104)];
+    
+    CGContextAddPath(ctx, path.CGPath);
+    
+    CGContextClip(ctx);
+    
+    // 5.把图片绘制到上下文中
+    
+    [img drawAtPoint:CGPointZero];
+    
+    // 6.从上下文中获取裁剪好的图片对象
+    
+    UIImage*imgCliped =UIGraphicsGetImageFromCurrentImageContext();
+    
+//    UIImageWriteToSavedPhotosAlbum(imgCliped, self, nil, NULL);
+    
+    // 6.2关闭位图上下文
+    UIGraphicsEndImageContext();
+    
+}
+
+- (UIImage *)getImageByCuttingImage:(UIImage *)image Rect:(CGRect)rect{
+    
+    //大图bigImage
+    
+    //定义myImageRect，截图的区域
+    
+    CGRect myImageRect = rect;
+    
+    UIImage* bigImage= image;
+    
+    CGImageRef imageRef = bigImage.CGImage;
+    
+    CGImageRef subImageRef = CGImageCreateWithImageInRect(imageRef, myImageRect);
+    
+    CGSize size;
+    
+    size.width = rect.size.width;
+    
+    size.height = rect.size.height;
+    
+    UIGraphicsBeginImageContext(size);
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextDrawImage(context, myImageRect, subImageRef);
+    
+    UIImage* smallImage = [UIImage imageWithCGImage:subImageRef];
+    
+//    UIImageWriteToSavedPhotosAlbum(smallImage, self, nil, NULL);
+    
+    UIGraphicsEndImageContext();
+    
+    return smallImage;
+    
+}
+
+//屏幕的截取
+- (UIImage *)getSnapshotImage {
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)), NO, 1);
+    [self.view drawViewHierarchyInRect:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)) afterScreenUpdates:NO];
+    UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return snapshot;
+}
 //设置当前页面支持横竖屏，DEMO默认不支持横竖屏
 //-(UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
 //{

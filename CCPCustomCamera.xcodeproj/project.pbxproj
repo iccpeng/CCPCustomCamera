@@ -17,6 +17,7 @@
 		217172DC1D92656A00B89D7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 217172DA1D92656A00B89D7F /* LaunchScreen.storyboard */; };
 		217172E71D92656A00B89D7F /* CCPCustomCameraTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 217172E61D92656A00B89D7F /* CCPCustomCameraTests.m */; };
 		217172F21D92656A00B89D7F /* CCPCustomCameraUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 217172F11D92656A00B89D7F /* CCPCustomCameraUITests.m */; };
+		7E252F7A1DB73EB800B6DDC9 /* UIImage+ST.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E252F791DB73EB800B6DDC9 /* UIImage+ST.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,8 @@
 		217172ED1D92656A00B89D7F /* CCPCustomCameraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CCPCustomCameraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		217172F11D92656A00B89D7F /* CCPCustomCameraUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CCPCustomCameraUITests.m; sourceTree = "<group>"; };
 		217172F31D92656A00B89D7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7E252F781DB73EB800B6DDC9 /* UIImage+ST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ST.h"; sourceTree = "<group>"; };
+		7E252F791DB73EB800B6DDC9 /* UIImage+ST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ST.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +110,8 @@
 		217172CB1D92656A00B89D7F /* CCPCustomCamera */ = {
 			isa = PBXGroup;
 			children = (
+				7E252F781DB73EB800B6DDC9 /* UIImage+ST.h */,
+				7E252F791DB73EB800B6DDC9 /* UIImage+ST.m */,
 				217172CF1D92656A00B89D7F /* AppDelegate.h */,
 				217172D01D92656A00B89D7F /* AppDelegate.m */,
 				2129B34A1D93717C0074B7D6 /* CCPTakePicturesController.h */,
@@ -281,6 +286,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E252F7A1DB73EB800B6DDC9 /* UIImage+ST.m in Sources */,
 				2129B34C1D93717C0074B7D6 /* CCPTakePicturesController.m in Sources */,
 				217172D41D92656A00B89D7F /* ViewController.m in Sources */,
 				217172D11D92656A00B89D7F /* AppDelegate.m in Sources */,
