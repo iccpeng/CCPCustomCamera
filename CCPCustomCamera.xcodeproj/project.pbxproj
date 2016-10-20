@@ -7,17 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2129B34C1D93717C0074B7D6 /* CCPTakePicturesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2129B34B1D93717C0074B7D6 /* CCPTakePicturesController.m */; };
-		2129B3631D93D08B0074B7D6 /* MotionOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2129B3621D93D08B0074B7D6 /* MotionOrientation.m */; };
 		217172CE1D92656A00B89D7F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 217172CD1D92656A00B89D7F /* main.m */; };
-		217172D11D92656A00B89D7F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 217172D01D92656A00B89D7F /* AppDelegate.m */; };
-		217172D41D92656A00B89D7F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 217172D31D92656A00B89D7F /* ViewController.m */; };
 		217172D71D92656A00B89D7F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 217172D51D92656A00B89D7F /* Main.storyboard */; };
 		217172D91D92656A00B89D7F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 217172D81D92656A00B89D7F /* Assets.xcassets */; };
 		217172DC1D92656A00B89D7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 217172DA1D92656A00B89D7F /* LaunchScreen.storyboard */; };
 		217172E71D92656A00B89D7F /* CCPCustomCameraTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 217172E61D92656A00B89D7F /* CCPCustomCameraTests.m */; };
 		217172F21D92656A00B89D7F /* CCPCustomCameraUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 217172F11D92656A00B89D7F /* CCPCustomCameraUITests.m */; };
-		7E252F7A1DB73EB800B6DDC9 /* UIImage+ST.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E252F791DB73EB800B6DDC9 /* UIImage+ST.m */; };
+		7ED944071DB88ED70083D7FA /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ED944061DB88ED70083D7FA /* CoreMotion.framework */; };
+		7ED944091DB88EE50083D7FA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ED944081DB88EE50083D7FA /* CoreGraphics.framework */; };
+		7ED944101DB8C58C0083D7FA /* UIImage+ST.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ED9440E1DB8C58C0083D7FA /* UIImage+ST.m */; };
+		7ED9441A1DB8C59F0083D7FA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ED944171DB8C59F0083D7FA /* AppDelegate.m */; };
+		7ED9441B1DB8C59F0083D7FA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ED944191DB8C59F0083D7FA /* ViewController.m */; };
+		7ED944251DB8C70D0083D7FA /* CCPTakePicturesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ED944221DB8C70D0083D7FA /* CCPTakePicturesController.m */; };
+		7ED944261DB8C70D0083D7FA /* MotionOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ED944241DB8C70D0083D7FA /* MotionOrientation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,16 +40,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2129B34A1D93717C0074B7D6 /* CCPTakePicturesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPTakePicturesController.h; sourceTree = "<group>"; };
-		2129B34B1D93717C0074B7D6 /* CCPTakePicturesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPTakePicturesController.m; sourceTree = "<group>"; };
-		2129B3611D93D08B0074B7D6 /* MotionOrientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MotionOrientation.h; sourceTree = "<group>"; };
-		2129B3621D93D08B0074B7D6 /* MotionOrientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MotionOrientation.m; sourceTree = "<group>"; };
 		217172C91D92656A00B89D7F /* CCPCustomCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CCPCustomCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		217172CD1D92656A00B89D7F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		217172CF1D92656A00B89D7F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		217172D01D92656A00B89D7F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		217172D21D92656A00B89D7F /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		217172D31D92656A00B89D7F /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		217172D61D92656A00B89D7F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		217172D81D92656A00B89D7F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		217172DB1D92656A00B89D7F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -58,8 +52,18 @@
 		217172ED1D92656A00B89D7F /* CCPCustomCameraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CCPCustomCameraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		217172F11D92656A00B89D7F /* CCPCustomCameraUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CCPCustomCameraUITests.m; sourceTree = "<group>"; };
 		217172F31D92656A00B89D7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7E252F781DB73EB800B6DDC9 /* UIImage+ST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ST.h"; sourceTree = "<group>"; };
-		7E252F791DB73EB800B6DDC9 /* UIImage+ST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ST.m"; sourceTree = "<group>"; };
+		7ED944061DB88ED70083D7FA /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		7ED944081DB88EE50083D7FA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		7ED9440D1DB8C58B0083D7FA /* UIImage+ST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ST.h"; sourceTree = "<group>"; };
+		7ED9440E1DB8C58C0083D7FA /* UIImage+ST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ST.m"; sourceTree = "<group>"; };
+		7ED944161DB8C59F0083D7FA /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		7ED944171DB8C59F0083D7FA /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		7ED944181DB8C59F0083D7FA /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		7ED944191DB8C59F0083D7FA /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		7ED944211DB8C70D0083D7FA /* CCPTakePicturesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPTakePicturesController.h; sourceTree = "<group>"; };
+		7ED944221DB8C70D0083D7FA /* CCPTakePicturesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPTakePicturesController.m; sourceTree = "<group>"; };
+		7ED944231DB8C70D0083D7FA /* MotionOrientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MotionOrientation.h; sourceTree = "<group>"; };
+		7ED944241DB8C70D0083D7FA /* MotionOrientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MotionOrientation.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +71,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7ED944091DB88EE50083D7FA /* CoreGraphics.framework in Frameworks */,
+				7ED944071DB88ED70083D7FA /* CoreMotion.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,6 +100,7 @@
 				217172E51D92656A00B89D7F /* CCPCustomCameraTests */,
 				217172F01D92656A00B89D7F /* CCPCustomCameraUITests */,
 				217172CA1D92656A00B89D7F /* Products */,
+				7ED944051DB88ED70083D7FA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -110,16 +117,9 @@
 		217172CB1D92656A00B89D7F /* CCPCustomCamera */ = {
 			isa = PBXGroup;
 			children = (
-				7E252F781DB73EB800B6DDC9 /* UIImage+ST.h */,
-				7E252F791DB73EB800B6DDC9 /* UIImage+ST.m */,
-				217172CF1D92656A00B89D7F /* AppDelegate.h */,
-				217172D01D92656A00B89D7F /* AppDelegate.m */,
-				2129B34A1D93717C0074B7D6 /* CCPTakePicturesController.h */,
-				2129B34B1D93717C0074B7D6 /* CCPTakePicturesController.m */,
-				2129B3611D93D08B0074B7D6 /* MotionOrientation.h */,
-				2129B3621D93D08B0074B7D6 /* MotionOrientation.m */,
-				217172D21D92656A00B89D7F /* ViewController.h */,
-				217172D31D92656A00B89D7F /* ViewController.m */,
+				7ED944151DB8C59F0083D7FA /* Class */,
+				7ED9440A1DB8C58B0083D7FA /* Category */,
+				7ED944201DB8C70D0083D7FA /* CCPCustomCamera */,
 				217172D51D92656A00B89D7F /* Main.storyboard */,
 				217172D81D92656A00B89D7F /* Assets.xcassets */,
 				217172DA1D92656A00B89D7F /* LaunchScreen.storyboard */,
@@ -153,6 +153,46 @@
 				217172F31D92656A00B89D7F /* Info.plist */,
 			);
 			path = CCPCustomCameraUITests;
+			sourceTree = "<group>";
+		};
+		7ED944051DB88ED70083D7FA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7ED944081DB88EE50083D7FA /* CoreGraphics.framework */,
+				7ED944061DB88ED70083D7FA /* CoreMotion.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7ED9440A1DB8C58B0083D7FA /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				7ED9440D1DB8C58B0083D7FA /* UIImage+ST.h */,
+				7ED9440E1DB8C58C0083D7FA /* UIImage+ST.m */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		7ED944151DB8C59F0083D7FA /* Class */ = {
+			isa = PBXGroup;
+			children = (
+				7ED944161DB8C59F0083D7FA /* AppDelegate.h */,
+				7ED944171DB8C59F0083D7FA /* AppDelegate.m */,
+				7ED944181DB8C59F0083D7FA /* ViewController.h */,
+				7ED944191DB8C59F0083D7FA /* ViewController.m */,
+			);
+			path = Class;
+			sourceTree = "<group>";
+		};
+		7ED944201DB8C70D0083D7FA /* CCPCustomCamera */ = {
+			isa = PBXGroup;
+			children = (
+				7ED944231DB8C70D0083D7FA /* MotionOrientation.h */,
+				7ED944241DB8C70D0083D7FA /* MotionOrientation.m */,
+				7ED944211DB8C70D0083D7FA /* CCPTakePicturesController.h */,
+				7ED944221DB8C70D0083D7FA /* CCPTakePicturesController.m */,
+			);
+			path = CCPCustomCamera;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -286,12 +326,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7E252F7A1DB73EB800B6DDC9 /* UIImage+ST.m in Sources */,
-				2129B34C1D93717C0074B7D6 /* CCPTakePicturesController.m in Sources */,
-				217172D41D92656A00B89D7F /* ViewController.m in Sources */,
-				217172D11D92656A00B89D7F /* AppDelegate.m in Sources */,
-				2129B3631D93D08B0074B7D6 /* MotionOrientation.m in Sources */,
+				7ED944261DB8C70D0083D7FA /* MotionOrientation.m in Sources */,
+				7ED944251DB8C70D0083D7FA /* CCPTakePicturesController.m in Sources */,
+				7ED9441B1DB8C59F0083D7FA /* ViewController.m in Sources */,
+				7ED944101DB8C58C0083D7FA /* UIImage+ST.m in Sources */,
 				217172CE1D92656A00B89D7F /* main.m in Sources */,
+				7ED9441A1DB8C59F0083D7FA /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

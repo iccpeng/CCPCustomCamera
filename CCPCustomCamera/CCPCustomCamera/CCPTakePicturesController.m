@@ -2,8 +2,8 @@
 //  CCPTakePicturesController.m
 //  CCPCustomCamera
 //
-//  Created by DR on 16/9/22.
-//  Copyright © 2016年 CCP. All rights reserved.
+//  Created by C CP on 16/9/22.
+//  Copyright © 2016年 C CP. All rights reserved.
 //
 
 #import "CCPTakePicturesController.h"
@@ -74,8 +74,17 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
+    //判断相机 是否可以使用
+//    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+//        
+//        NSLog(@"sorry, no camera or camera is unavailable.");
+//        
+//        return;
+//    }
     
     [[MotionOrientation sharedInstance] startAccelerometerUpdates];
+    
+    self.deviceOrientation = UIDeviceOrientationPortrait;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(motionDeviceOrientationChanged:) name:MotionOrientationChangedNotification object:nil];
     
@@ -111,7 +120,13 @@
     self.device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     //初始化session
     self.session = [[AVCaptureSession alloc] init];
-    self.session.sessionPreset = AVCaptureSessionPresetPhoto;
+    
+    if ([self.session canSetSessionPreset:AVCaptureSessionPresetPhoto]) {
+        
+        self.session.sessionPreset = AVCaptureSessionPresetPhoto;
+        
+    }
+    
     //初始化输入设备
     self.deviceInput = [AVCaptureDeviceInput deviceInputWithDevice:self.device error:&error];
     //初始化照片输出对象
@@ -134,12 +149,19 @@
         AVLayerVideoGravityResizeAspectFill, // 等比例填充，直到填充满整个视图区域，其中一个维度的部分区域会被裁剪
      */
     
-    self.previewLayer.videoGravity = AVLayerVideoGravityResize;
+    self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     //设置图层的frame
-    CGFloat viewWidth = self.view.frame.size.width;
-    CGFloat viewHeight = self.view.frame.size.height - 64;
-    self.previewLayer.frame = CGRectMake(0, 40,viewWidth, viewHeight);
+    CGFloat previewLayerW = self.view.frame.size.width;
+    CGFloat previewLayerH = self.view.frame.size.height;
+    self.previewLayer.frame = CGRectMake(0, 40,previewLayerW, (previewLayerW * 4 / 3));
     [self.view.layer addSublayer:self.previewLayer];
+//    [self.view.layer insertSublayer:self.previewLayer atIndex:0];
+//    UIView *caramView = [[UIView alloc] initWithFrame:self.previewLayer.frame];
+//    caramView.backgroundColor = [UIColor redColor];
+//    caramView.alpha = 0.5f;
+//    [self.view addSubview:caramView];
+    
+    CGFloat previewLayerY = CGRectGetMaxY(self.previewLayer.frame);
     
     UIButton *button = [[UIButton alloc] init];
     
@@ -149,7 +171,7 @@
     
     [button setBackgroundColor:[UIColor purpleColor]];
     
-    button.frame = CGRectMake(0, viewHeight, viewWidth, 64);
+    button.frame = CGRectMake(0, previewLayerY , previewLayerW, previewLayerH - previewLayerY);
     [button addTarget:self action:@selector(clickPHOTO) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
     
@@ -175,7 +197,7 @@
     
     /**
      *  为了实现在锁屏状态下能够获取屏幕的旋转方向，这里通过使用 CoreMotion 框架（加速计）进行屏幕方向的判断
-     self.deviceOrientation = [MotionOrientation sharedInstance].deviceOrientation]
+     self.deviceOrientation = [MotionOrientation sharedInstance].deviceOrientation
      
      在这里用到了第三方开源框架 MotionOrientation 对作者表示衷心的感谢
      框架地址： GitHub:https://github.com/tastyone/MotionOrientation
@@ -205,18 +227,15 @@
         
         UIImageWriteToSavedPhotosAlbum(image, self, nil, NULL);
 
-        
         UIImage *imageFulllll = [self cutImage:image];
         
-        UIImageWriteToSavedPhotosAlbum(imageFulllll, self, nil, NULL);
-        
+//        UIImageWriteToSavedPhotosAlbum(imageFulllll, self, nil, NULL);
         
         UIImage *imageFULL = [self getSnapshotImage];
         
         
 //        UIImageWriteToSavedPhotosAlbum(imageFULL, self, nil, NULL);
 
-        
         
         //图片的裁剪
 //        [self didClickButton:image];
@@ -231,7 +250,6 @@
 //        }];
         
     }];
-    
 }
 
 - (AVCaptureVideoOrientation)avOrientationForDeviceOrientation:(UIDeviceOrientation)deviceOrientation
@@ -245,7 +263,6 @@
 }
 
 
-
 - (void)motionDeviceOrientationChanged:(NSNotification *)notification
 
 {
@@ -253,6 +270,8 @@
         
         self.deviceOrientation = [MotionOrientation sharedInstance].deviceOrientation;
         
+        NSLog(@"----------------%ld",(long)self.deviceOrientation);
+   
     });
 }
 
@@ -260,10 +279,8 @@
 
 - (UIImage *)cutImage:(UIImage *)srcImg {
     
-    
-    
     //注意：这个rect是指横屏时的rect，即屏幕对着自己，home建在右边
-    CGRect rect = CGRectMake((srcImg.size.height / CGRectGetHeight(self.view.frame)) * 40, 0, srcImg.size.width * 1.33, srcImg.size.width);
+    CGRect rect = CGRectMake((srcImg.size.height / CGRectGetHeight(self.view.frame)) * 70, 0, srcImg.size.width * 1.33, srcImg.size.width);
     CGImageRef subImageRef = CGImageCreateWithImageInRect(srcImg.CGImage, rect);
     CGFloat subWidth = CGImageGetWidth(subImageRef);
     CGFloat subHeight = CGImageGetHeight(subImageRef);

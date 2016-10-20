@@ -9,11 +9,11 @@
 /**
  *  获取圆角图片
  *
- *  @param image       <#image description#>
- *  @param borderWidth <#borderWidth description#>
- *  @param color       <#color description#>
+ *  @param image       image description
+ *  @param borderWidth borderWidth description
+ *  @param color       color description
  *
- *  @return <#return value description#>
+ *  @return return value description
  */
 
 + (UIImage *)imageWithClipImage:(UIImage *)image borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)color;

@@ -107,9 +107,9 @@
 /**
  *  截取指定位置的图片
  *
- *  @param bounds <#bounds description#>
+ *  @param bounds bounds description
  *
- *  @return <#return value description#>
+ *  @return return value description
  */
 - (UIImage *)croppedImage:(CGRect)bounds {
     CGFloat scale = MAX(self.scale, 1.0f);
@@ -119,6 +119,5 @@
     CGImageRelease(imageRef);
     return croppedImage;
 }
-
 
 @end
