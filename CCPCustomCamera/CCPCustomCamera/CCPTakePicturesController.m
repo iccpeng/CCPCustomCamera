@@ -155,11 +155,11 @@
     CGFloat previewLayerH = self.view.frame.size.height;
     self.previewLayer.frame = CGRectMake(0, 40,previewLayerW, (previewLayerW * 4 / 3));
     [self.view.layer addSublayer:self.previewLayer];
-//    [self.view.layer insertSublayer:self.previewLayer atIndex:0];
-//    UIView *caramView = [[UIView alloc] initWithFrame:self.previewLayer.frame];
-//    caramView.backgroundColor = [UIColor redColor];
-//    caramView.alpha = 0.5f;
-//    [self.view addSubview:caramView];
+
+    UIView *caramView = [[UIView alloc] initWithFrame:self.previewLayer.frame];
+    caramView.backgroundColor = [UIColor redColor];
+    caramView.alpha = 0.5f;
+    [self.view addSubview:caramView];
     
     CGFloat previewLayerY = CGRectGetMaxY(self.previewLayer.frame);
     
