@@ -14,6 +14,8 @@
 
 #import "MotionOrientation.h"
 
+typedef void(^lightBlock)();
+
 @interface CCPTakePicturesController ()
 
 //创建相机相关的属性
@@ -62,6 +64,15 @@
  *  最后的缩放比例
  */
 @property(nonatomic,assign)CGFloat effectiveScale;
+/**
+ *  闪光灯按钮
+ */
+@property(nonatomic,weak)UIButton *lightButton;
+/**
+ *  闪光灯状态
+ */
+@property (nonatomic,assign) NSInteger lightCameraState;
+
 
 @end
 
@@ -72,15 +83,18 @@
     
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor blackColor];
     
     //判断相机 是否可以使用
-//    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-//        
-//        NSLog(@"sorry, no camera or camera is unavailable.");
-//        
-//        return;
-//    }
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        
+        NSLog(@"sorry, no camera or camera is unavailable.");
+        
+        return;
+    }
+    
+    //设置闪光灯的默认状态
+    self.lightCameraState = 0;
     
     [[MotionOrientation sharedInstance] startAccelerometerUpdates];
     
@@ -91,7 +105,10 @@
     [self makeUI];
 }
 
-
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
 - (void)viewWillAppear:(BOOL)animated{
     
     [super viewWillAppear:YES];
@@ -115,6 +132,53 @@
 
 //UI界面布局及对象的初始化
 - (void) makeUI {
+    //设置图层的frame
+    CGFloat ScreenW = self.view.frame.size.width;
+    CGFloat ScreenH = self.view.frame.size.height;
+    UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenW, 40)];
+    headView.backgroundColor = [UIColor blackColor];
+    //返回按钮
+    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 40)];
+    backButton.backgroundColor = [UIColor redColor];
+    
+    [backButton addTarget:self action:@selector(clickBackButton) forControlEvents:UIControlEventTouchUpInside];
+    
+    [backButton setTitle:@"返回" forState:UIControlStateNormal];
+    
+    [backButton setTintColor:[UIColor whiteColor]];
+    
+    [headView addSubview:backButton];
+    
+    //切换镜头按钮
+    
+    UIButton *changeButton = [[UIButton alloc] initWithFrame:CGRectMake(100, 0, 60, 40)];
+    changeButton.backgroundColor = [UIColor greenColor];
+    
+    [changeButton addTarget:self action:@selector(clickchangeButton) forControlEvents:UIControlEventTouchUpInside];
+    
+    [changeButton setTitle:@"切换" forState:UIControlStateNormal];
+    
+    [changeButton setTintColor:[UIColor whiteColor]];
+    
+    [headView addSubview:changeButton];
+    
+    //闪光灯
+    
+    UIButton *lightButton = [[UIButton alloc] initWithFrame:CGRectMake(200, 0, 80, 40)];
+    lightButton.backgroundColor = [UIColor blueColor];
+    
+    [lightButton addTarget:self action:@selector(clickLightButton:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [lightButton setTitle:@"关闭" forState:UIControlStateNormal];
+    
+    [lightButton setTintColor:[UIColor whiteColor]];
+    
+    self.lightButton = lightButton;
+    
+    [headView addSubview:lightButton];
+    
+    [self.view addSubview:headView];
+    
     NSError *error;
     //创建会话层
     self.device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
@@ -145,17 +209,15 @@
     self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
     /** 设置图层的填充样式
      *  AVLayerVideoGravityResize,       // 非均匀模式。两个维度完全填充至整个视图区域
-        AVLayerVideoGravityResizeAspect,  // 等比例填充，直到一个维度到达区域边界
-        AVLayerVideoGravityResizeAspectFill, // 等比例填充，直到填充满整个视图区域，其中一个维度的部分区域会被裁剪
+     AVLayerVideoGravityResizeAspect,  // 等比例填充，直到一个维度到达区域边界
+     AVLayerVideoGravityResizeAspectFill, // 等比例填充，直到填充满整个视图区域，其中一个维度的部分区域会被裁剪
      */
     
     self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    //设置图层的frame
-    CGFloat previewLayerW = self.view.frame.size.width;
-    CGFloat previewLayerH = self.view.frame.size.height;
-    self.previewLayer.frame = CGRectMake(0, 40,previewLayerW, (previewLayerW * 4 / 3));
+    
+    self.previewLayer.frame = CGRectMake(0, 40,ScreenW, (ScreenW * 4 / 3));
     [self.view.layer addSublayer:self.previewLayer];
-
+    
     UIView *caramView = [[UIView alloc] initWithFrame:self.previewLayer.frame];
     caramView.backgroundColor = [UIColor redColor];
     caramView.alpha = 0.5f;
@@ -171,10 +233,110 @@
     
     [button setBackgroundColor:[UIColor purpleColor]];
     
-    button.frame = CGRectMake(0, previewLayerY , previewLayerW, previewLayerH - previewLayerY);
+    button.frame = CGRectMake(0, previewLayerY , ScreenW, ScreenH - previewLayerY);
     [button addTarget:self action:@selector(clickPHOTO) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
     
+}
+
+- (void) clickBackButton {
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) clickchangeButton {
+    // 翻转
+    [UIView beginAnimations:@"animation" context:nil];
+    [UIView setAnimationDuration:.5f];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.view cache:YES];
+    [UIView commitAnimations];
+    
+    NSArray *inputs = self.session.inputs;
+    for ( AVCaptureDeviceInput *input in inputs ) {
+        AVCaptureDevice *device = input.device;
+        if ( [device hasMediaType:AVMediaTypeVideo] ) {
+            AVCaptureDevicePosition position = device.position;
+            AVCaptureDevice *newCamera = nil;
+            AVCaptureDeviceInput *newInput = nil;
+            
+            if (position == AVCaptureDevicePositionFront)
+                newCamera = [self cameraWithPosition:AVCaptureDevicePositionBack];
+            else
+                newCamera = [self cameraWithPosition:AVCaptureDevicePositionFront];
+            newInput = [AVCaptureDeviceInput deviceInputWithDevice:newCamera error:nil];
+            
+            [self.session beginConfiguration];
+            
+            [self.session removeInput:input];
+            [self.session addInput:newInput];
+            
+            // Changes take effect once the outermost commitConfiguration is invoked.
+            [self.session commitConfiguration];
+            break;
+        }
+    }
+    
+    
+}
+
+
+- (AVCaptureDevice *)cameraWithPosition:(AVCaptureDevicePosition)position
+{
+    NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+    for ( AVCaptureDevice *device in devices )
+        if ( device.position == position )
+            return device;
+    return nil;
+}
+
+
+- (void) clickLightButton:(UIButton *)sender {
+    
+    if (self.lightCameraState < 0) {
+        self.lightCameraState = 0;
+    }
+    self.lightCameraState ++;
+    if (self.lightCameraState >= 4) {
+        self.lightCameraState = 1;
+    }
+    AVCaptureFlashMode mode;
+    
+    switch (self.lightCameraState) {
+        case 1:
+            mode = AVCaptureFlashModeOn;
+            [sender setTitle:@"打开" forState:UIControlStateNormal];
+            break;
+        case 2:
+            mode = AVCaptureFlashModeAuto;
+            [sender setTitle:@"自动" forState:UIControlStateNormal];
+            break;
+        case 3:
+            mode = AVCaptureFlashModeOff;
+            [sender setTitle:@"关闭" forState:UIControlStateNormal];
+            break;
+        default:
+            mode = AVCaptureFlashModeOff;
+            [sender setTitle:@"关闭" forState:UIControlStateNormal];
+            break;
+    }
+    if ([self.device isFlashModeSupported:mode])
+    {
+        [self flashLightModel:^{
+            
+            [self.device setFlashMode:mode];
+        }];
+    }
+}
+
+- (void) flashLightModel:(lightBlock) lightBlock{
+    if (!lightBlock) return;
+    [self.session beginConfiguration];
+    [self.device lockForConfiguration:nil];
+    lightBlock();
+    [self.device unlockForConfiguration];
+    [self.session commitConfiguration];
+    [self.session startRunning];
 }
 
 - (void)clickPHOTO {
@@ -209,11 +371,12 @@
     AVCaptureVideoOrientation avcaptureOrientation = [self avOrientationForDeviceOrientation: self.deviceOrientation];
     
     [self.connection setVideoOrientation:avcaptureOrientation];
-    //[self.connection setVideoScaleAndCropFactor:self.effectiveScale];
     
     [self.imageOutput captureStillImageAsynchronouslyFromConnection:self.connection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
         
         NSData *jpegData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
+        //原图
+        UIImage *image = [UIImage imageWithData:jpegData];
         
         CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault,imageDataSampleBuffer,kCMAttachmentMode_ShouldPropagate);
         
@@ -222,32 +385,12 @@
             //无权限
             return ;
         }
-        //原图0
-        UIImage *image = [UIImage imageWithData:jpegData];
         
         UIImageWriteToSavedPhotosAlbum(image, self, nil, NULL);
-
-        UIImage *imageFulllll = [self cutImage:image];
-        
-//        UIImageWriteToSavedPhotosAlbum(imageFulllll, self, nil, NULL);
-        
-        UIImage *imageFULL = [self getSnapshotImage];
-        
-        
-//        UIImageWriteToSavedPhotosAlbum(imageFULL, self, nil, NULL);
-
-        
-        //图片的裁剪
-//        [self didClickButton:image];
-        
-//        CGRect rect = CGRectMake(0, 40, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 104);
-        
-//        [self getImageByCuttingImage:image Rect:rect];
-        
-//        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-//        [library writeImageDataToSavedPhotosAlbum:jpegData metadata:(__bridge id)attachments completionBlock:^(NSURL *assetURL, NSError *error) {
-//            
-//        }];
+        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+        [library writeImageDataToSavedPhotosAlbum:jpegData metadata:(__bridge id)attachments completionBlock:^(NSURL *assetURL, NSError *error) {
+            
+        }];
         
     }];
 }
@@ -271,38 +414,12 @@
         self.deviceOrientation = [MotionOrientation sharedInstance].deviceOrientation;
         
         NSLog(@"----------------%ld",(long)self.deviceOrientation);
-   
+        
     });
 }
 
 
 
-- (UIImage *)cutImage:(UIImage *)srcImg {
-    
-    //注意：这个rect是指横屏时的rect，即屏幕对着自己，home建在右边
-    CGRect rect = CGRectMake((srcImg.size.height / CGRectGetHeight(self.view.frame)) * 70, 0, srcImg.size.width * 1.33, srcImg.size.width);
-    CGImageRef subImageRef = CGImageCreateWithImageInRect(srcImg.CGImage, rect);
-    CGFloat subWidth = CGImageGetWidth(subImageRef);
-    CGFloat subHeight = CGImageGetHeight(subImageRef);
-    CGRect smallBounds = CGRectMake(0, 0, subWidth, subHeight);
-    //旋转后，画出来
-    CGAffineTransform transform = CGAffineTransformIdentity;
-    transform = CGAffineTransformTranslate(transform, 0, subWidth);
-    transform = CGAffineTransformRotate(transform, -M_PI_2);
-    CGContextRef ctx = CGBitmapContextCreate(NULL, subHeight, subWidth,
-                                             CGImageGetBitsPerComponent(subImageRef), 0,
-                                             CGImageGetColorSpace(subImageRef),
-                                             CGImageGetBitmapInfo(subImageRef));
-    CGContextConcatCTM(ctx, transform);
-    CGContextDrawImage(ctx, smallBounds, subImageRef);
-    CGImageRef cgimg = CGBitmapContextCreateImage(ctx);
-    UIImage *img = [UIImage imageWithCGImage:cgimg];
-    
-    CGContextRelease(ctx);
-    CGImageRelease(cgimg);
-    return img;
-    
-}
 
 
 - (void)didClickButton:(UIImage *)img {
@@ -335,7 +452,7 @@
     
     UIImage*imgCliped =UIGraphicsGetImageFromCurrentImageContext();
     
-//    UIImageWriteToSavedPhotosAlbum(imgCliped, self, nil, NULL);
+    //    UIImageWriteToSavedPhotosAlbum(imgCliped, self, nil, NULL);
     
     // 6.2关闭位图上下文
     UIGraphicsEndImageContext();
@@ -370,7 +487,7 @@
     
     UIImage* smallImage = [UIImage imageWithCGImage:subImageRef];
     
-//    UIImageWriteToSavedPhotosAlbum(smallImage, self, nil, NULL);
+    //    UIImageWriteToSavedPhotosAlbum(smallImage, self, nil, NULL);
     
     UIGraphicsEndImageContext();
     
