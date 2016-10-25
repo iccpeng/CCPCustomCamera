@@ -14,9 +14,11 @@
 
 #import "MotionOrientation.h"
 
+#import "TOCropViewController.h"
+
 typedef void(^lightBlock)();
 
-@interface CCPTakePicturesController ()
+@interface CCPTakePicturesController ()<UIGestureRecognizerDelegate,TOCropViewControllerDelegate>
 
 //创建相机相关的属性
 
@@ -73,6 +75,9 @@ typedef void(^lightBlock)();
  */
 @property (nonatomic,assign) NSInteger lightCameraState;
 
+@property (weak, nonatomic) IBOutlet UIView *backView;
+
+
 
 @end
 
@@ -95,6 +100,8 @@ typedef void(^lightBlock)();
     
     //设置闪光灯的默认状态
     self.lightCameraState = 0;
+    
+    self.effectiveScale = self.beginGestureScale = 1.0f;
     
     [[MotionOrientation sharedInstance] startAccelerometerUpdates];
     
@@ -139,7 +146,7 @@ typedef void(^lightBlock)();
     headView.backgroundColor = [UIColor blackColor];
     //返回按钮
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 40)];
-    backButton.backgroundColor = [UIColor redColor];
+//    backButton.backgroundColor = [UIColor redColor];
     
     [backButton addTarget:self action:@selector(clickBackButton) forControlEvents:UIControlEventTouchUpInside];
     
@@ -151,33 +158,51 @@ typedef void(^lightBlock)();
     
     //切换镜头按钮
     
-    UIButton *changeButton = [[UIButton alloc] initWithFrame:CGRectMake(100, 0, 60, 40)];
-    changeButton.backgroundColor = [UIColor greenColor];
+    UIButton *changeButton = [[UIButton alloc] initWithFrame:CGRectMake(ScreenW - 60, 0, 60, 40)];
+//    changeButton.backgroundColor = [UIColor greenColor];
     
     [changeButton addTarget:self action:@selector(clickchangeButton) forControlEvents:UIControlEventTouchUpInside];
     
-    [changeButton setTitle:@"切换" forState:UIControlStateNormal];
+//    [changeButton setTitle:@"切换" forState:UIControlStateNormal];
+//    
+//    [changeButton setTintColor:[UIColor whiteColor]];
     
-    [changeButton setTintColor:[UIColor whiteColor]];
+     [changeButton setImage:[UIImage imageNamed:@"camera-switch"] forState:UIControlStateNormal];
     
     [headView addSubview:changeButton];
     
     //闪光灯
     
-    UIButton *lightButton = [[UIButton alloc] initWithFrame:CGRectMake(200, 0, 80, 40)];
-    lightButton.backgroundColor = [UIColor blueColor];
+    UIButton *lightButton = [[UIButton alloc] initWithFrame:CGRectMake(ScreenW / 2 - 30, 0, 60, 40)];
+//    lightButton.backgroundColor = [UIColor blueColor];
     
     [lightButton addTarget:self action:@selector(clickLightButton:) forControlEvents:UIControlEventTouchUpInside];
     
-    [lightButton setTitle:@"关闭" forState:UIControlStateNormal];
+//    [lightButton setTitle:@"关闭" forState:UIControlStateNormal];
+//    [lightButton setTintColor:[UIColor whiteColor]];
     
-    [lightButton setTintColor:[UIColor whiteColor]];
+    [lightButton setImage:[UIImage imageNamed:@"flashOffIcon"] forState:UIControlStateNormal];
+    
+    
     
     self.lightButton = lightButton;
     
     [headView addSubview:lightButton];
     
     [self.view addSubview:headView];
+    
+    
+    UIView *caramView = [[UIView alloc] initWithFrame:CGRectMake(0, 40,ScreenW, (ScreenW * 4 / 3))];
+    caramView.backgroundColor = [UIColor redColor];
+//    caramView.alpha = 0.5f;
+    //添加捏合手势
+    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchGesture:)];
+    pinch.delegate = self;
+    [caramView addGestureRecognizer:pinch];
+    [self.view addSubview:caramView];
+    [self.view sendSubviewToBack:caramView];
+    self.backView = caramView;
+    
     
     NSError *error;
     //创建会话层
@@ -207,6 +232,7 @@ typedef void(^lightBlock)();
     }
     //初始化预览图层
     self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
+    
     /** 设置图层的填充样式
      *  AVLayerVideoGravityResize,       // 非均匀模式。两个维度完全填充至整个视图区域
      AVLayerVideoGravityResizeAspect,  // 等比例填充，直到一个维度到达区域边界
@@ -215,23 +241,22 @@ typedef void(^lightBlock)();
     
     self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     
-    self.previewLayer.frame = CGRectMake(0, 40,ScreenW, (ScreenW * 4 / 3));
-    [self.view.layer addSublayer:self.previewLayer];
+    self.previewLayer.frame = CGRectMake(0, 0,ScreenW, ScreenW * 4 / 3);
     
-    UIView *caramView = [[UIView alloc] initWithFrame:self.previewLayer.frame];
-    caramView.backgroundColor = [UIColor redColor];
-    caramView.alpha = 0.5f;
-    [self.view addSubview:caramView];
+    [caramView.layer addSublayer:self.previewLayer];
     
-    CGFloat previewLayerY = CGRectGetMaxY(self.previewLayer.frame);
+    
+    CGFloat previewLayerY = CGRectGetMaxY(caramView.frame);
     
     UIButton *button = [[UIButton alloc] init];
     
-    [button setTitle:@"PHOTO" forState:UIControlStateNormal];
-    
-    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    [button setTitle:@"PHOTO" forState:UIControlStateNormal];
+//    
+//    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
     [button setBackgroundColor:[UIColor purpleColor]];
+    
+    [button setImage:[UIImage imageNamed:@"btn_prisma_takephoto"] forState:UIControlStateNormal];
     
     button.frame = CGRectMake(0, previewLayerY , ScreenW, ScreenH - previewLayerY);
     [button addTarget:self action:@selector(clickPHOTO) forControlEvents:UIControlEventTouchUpInside];
@@ -241,7 +266,8 @@ typedef void(^lightBlock)();
 
 - (void) clickBackButton {
     
-    [self dismissViewControllerAnimated:YES completion:nil];
+    self.previewLayer = nil;
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (void) clickchangeButton {
@@ -305,19 +331,24 @@ typedef void(^lightBlock)();
     switch (self.lightCameraState) {
         case 1:
             mode = AVCaptureFlashModeOn;
-            [sender setTitle:@"打开" forState:UIControlStateNormal];
+            
+            [sender setImage:[UIImage imageNamed:@"flashOnIcon"] forState:UIControlStateNormal];
+            
             break;
         case 2:
             mode = AVCaptureFlashModeAuto;
-            [sender setTitle:@"自动" forState:UIControlStateNormal];
+              [sender setImage:[UIImage imageNamed:@"flashAutoIcon"] forState:UIControlStateNormal];
+            
             break;
         case 3:
             mode = AVCaptureFlashModeOff;
-            [sender setTitle:@"关闭" forState:UIControlStateNormal];
+            
+             [sender setImage:[UIImage imageNamed:@"flashOffIcon"] forState:UIControlStateNormal];
             break;
         default:
             mode = AVCaptureFlashModeOff;
-            [sender setTitle:@"关闭" forState:UIControlStateNormal];
+            
+             [sender setImage:[UIImage imageNamed:@"flashOffIcon"] forState:UIControlStateNormal];
             break;
     }
     if ([self.device isFlashModeSupported:mode])
@@ -372,11 +403,28 @@ typedef void(^lightBlock)();
     
     [self.connection setVideoOrientation:avcaptureOrientation];
     
+    [self.connection setVideoScaleAndCropFactor:self.effectiveScale];
+    
     [self.imageOutput captureStillImageAsynchronouslyFromConnection:self.connection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
         
         NSData *jpegData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
         //原图
         UIImage *image = [UIImage imageWithData:jpegData];
+        
+        
+        TOCropViewController *cropController = [[TOCropViewController alloc] initWithImage:image];
+        cropController.delegate = self;
+        
+//        cropController.showActivitySheetOnDone = YES;
+        
+        cropController.aspectRatioPickerButtonHidden = YES;
+        cropController.aspectRatioLockEnabled = YES;
+        
+        cropController.resetAspectRatioEnabled = NO;
+        
+        cropController.customAspectRatio = CGSizeMake(1.0f, 1.0f);
+        
+        [self presentViewController:cropController animated:YES completion:nil];
         
         CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault,imageDataSampleBuffer,kCMAttachmentMode_ShouldPropagate);
         
@@ -418,9 +466,54 @@ typedef void(^lightBlock)();
     });
 }
 
+//缩放手势 用于调整焦距
+- (void)handlePinchGesture:(UIPinchGestureRecognizer *)recognizer{
+    
+    BOOL allTouchesAreOnThePreviewLayer = YES;
+    NSUInteger numTouches = [recognizer numberOfTouches], i;
+    for ( i = 0; i < numTouches; ++i ) {
+        CGPoint location = [recognizer locationOfTouch:i inView:self.backView];
+        CGPoint convertedLocation = [self.previewLayer convertPoint:location fromLayer:self.previewLayer.superlayer];
+        if ( ! [self.previewLayer containsPoint:convertedLocation] ) {
+            allTouchesAreOnThePreviewLayer = NO;
+            break;
+        }
+    }
+    
+    if ( allTouchesAreOnThePreviewLayer ) {
+        
+        self.effectiveScale = self.beginGestureScale * recognizer.scale;
+        if (self.effectiveScale < 1.0){
+            self.effectiveScale = 1.0;
+        }
+        
+        NSLog(@"%f-------------->%f------------recognizerScale%f",self.effectiveScale,self.beginGestureScale,recognizer.scale);
+        
+        CGFloat maxScaleAndCropFactor = [[self.imageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor];
+        
+        NSLog(@"%f",maxScaleAndCropFactor);
+        if (self.effectiveScale > maxScaleAndCropFactor)
+            self.effectiveScale = maxScaleAndCropFactor;
+        
+        [CATransaction begin];
+        [CATransaction setAnimationDuration:0.0f];
+        [self.previewLayer setAffineTransform:CGAffineTransformMakeScale(self.effectiveScale, self.effectiveScale)];
+        [CATransaction commit];
+        
+        NSLog(@"-------%@",self.previewLayer);
+        
+    }
+    
+}
 
-
-
+#pragma mark gestureRecognizer delegate
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    if ( [gestureRecognizer isKindOfClass:[UIPinchGestureRecognizer class]] ) {
+        self.beginGestureScale = self.effectiveScale;
+    }
+    return YES;
+}
 
 - (void)didClickButton:(UIImage *)img {
     
@@ -502,6 +595,13 @@ typedef void(^lightBlock)();
     UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return snapshot;
+}
+
+# pragma mark -TOCropViewControllerDelegate
+- (void)cropViewController:(TOCropViewController *)cropViewController didCropToImage:(UIImage *)image withRect:(CGRect)cropRect angle:(NSInteger)angle{
+
+    UIImageWriteToSavedPhotosAlbum(image, self, nil, NULL);
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 //设置当前页面支持横竖屏，DEMO默认不支持横竖屏
 //-(UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
