@@ -7,18 +7,16 @@
 //
 
 #import "CCPTakePicturesController.h"
-
 #import <AVFoundation/AVFoundation.h>
 //处理相册的系统框架
 #import <AssetsLibrary/AssetsLibrary.h>
-
 #import "MotionOrientation.h"
-
 #import "TOCropViewController.h"
+#import "ZLCameraView.h"
 
 typedef void(^lightBlock)();
 
-@interface CCPTakePicturesController ()<UIGestureRecognizerDelegate,TOCropViewControllerDelegate>
+@interface CCPTakePicturesController ()<UIGestureRecognizerDelegate,AVCaptureMetadataOutputObjectsDelegate,TOCropViewControllerDelegate,ZLCameraViewDelegate>
 
 //创建相机相关的属性
 
@@ -75,26 +73,19 @@ typedef void(^lightBlock)();
  */
 @property (nonatomic,assign) NSInteger lightCameraState;
 
-@property (weak, nonatomic) IBOutlet UIView *backView;
-
-
+@property (nonatomic,weak) ZLCameraView *caramView;
 
 @end
 
 @implementation CCPTakePicturesController
 
-
 - (void)viewDidLoad {
-    
     [super viewDidLoad];
-    
     self.view.backgroundColor = [UIColor blackColor];
-    
     //判断相机 是否可以使用
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         
         NSLog(@"sorry, no camera or camera is unavailable.");
-        
         return;
     }
     
@@ -117,8 +108,9 @@ typedef void(^lightBlock)();
     return YES;
 }
 - (void)viewWillAppear:(BOOL)animated{
-    
     [super viewWillAppear:YES];
+    //KVO 监听对焦回调
+    [self.device addObserver:self forKeyPath:@"adjustingFocus" options:NSKeyValueObservingOptionNew context:nil];
     
     if (self.session) {
         
@@ -126,10 +118,10 @@ typedef void(^lightBlock)();
     }
 }
 
-
 - (void)viewDidDisappear:(BOOL)animated{
-    
     [super viewDidDisappear:YES];
+    //移除KVO
+    [self.device removeObserver:self forKeyPath:@"adjustingFocus"];
     
     if (self.session) {
         
@@ -137,7 +129,7 @@ typedef void(^lightBlock)();
     }
 }
 
-//UI界面布局及对象的初始化
+#pragma mark -UI界面布局及对象的初始化
 - (void) makeUI {
     //设置图层的frame
     CGFloat ScreenW = self.view.frame.size.width;
@@ -146,76 +138,32 @@ typedef void(^lightBlock)();
     headView.backgroundColor = [UIColor blackColor];
     //返回按钮
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 40)];
-//    backButton.backgroundColor = [UIColor redColor];
-    
     [backButton addTarget:self action:@selector(clickBackButton) forControlEvents:UIControlEventTouchUpInside];
-    
     [backButton setTitle:@"返回" forState:UIControlStateNormal];
-    
     [backButton setTintColor:[UIColor whiteColor]];
-    
     [headView addSubview:backButton];
-    
     //切换镜头按钮
-    
     UIButton *changeButton = [[UIButton alloc] initWithFrame:CGRectMake(ScreenW - 60, 0, 60, 40)];
-//    changeButton.backgroundColor = [UIColor greenColor];
-    
     [changeButton addTarget:self action:@selector(clickchangeButton) forControlEvents:UIControlEventTouchUpInside];
-    
-//    [changeButton setTitle:@"切换" forState:UIControlStateNormal];
-//    
-//    [changeButton setTintColor:[UIColor whiteColor]];
-    
-     [changeButton setImage:[UIImage imageNamed:@"camera-switch"] forState:UIControlStateNormal];
-    
+    [changeButton setImage:[UIImage imageNamed:@"camera-switch"] forState:UIControlStateNormal];
     [headView addSubview:changeButton];
-    
     //闪光灯
-    
     UIButton *lightButton = [[UIButton alloc] initWithFrame:CGRectMake(ScreenW / 2 - 30, 0, 60, 40)];
-//    lightButton.backgroundColor = [UIColor blueColor];
-    
     [lightButton addTarget:self action:@selector(clickLightButton:) forControlEvents:UIControlEventTouchUpInside];
-    
-//    [lightButton setTitle:@"关闭" forState:UIControlStateNormal];
-//    [lightButton setTintColor:[UIColor whiteColor]];
-    
     [lightButton setImage:[UIImage imageNamed:@"flashOffIcon"] forState:UIControlStateNormal];
-    
-    
-    
     self.lightButton = lightButton;
-    
     [headView addSubview:lightButton];
-    
     [self.view addSubview:headView];
     
-    
-    UIView *caramView = [[UIView alloc] initWithFrame:CGRectMake(0, 40,ScreenW, (ScreenW * 4 / 3))];
-    caramView.backgroundColor = [UIColor redColor];
-//    caramView.alpha = 0.5f;
-    //添加捏合手势
-    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchGesture:)];
-    pinch.delegate = self;
-    [caramView addGestureRecognizer:pinch];
-    [self.view addSubview:caramView];
-    [self.view sendSubviewToBack:caramView];
-    self.backView = caramView;
-    
-    
+    //PreView
     NSError *error;
     //创建会话层
     self.device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     //初始化session
     self.session = [[AVCaptureSession alloc] init];
-    
     if ([self.session canSetSessionPreset:AVCaptureSessionPresetPhoto]) {
-        
         self.session.sessionPreset = AVCaptureSessionPresetPhoto;
-        
     }
-    
     //初始化输入设备
     self.deviceInput = [AVCaptureDeviceInput deviceInputWithDevice:self.device error:&error];
     //初始化照片输出对象
@@ -238,38 +186,39 @@ typedef void(^lightBlock)();
      AVLayerVideoGravityResizeAspect,  // 等比例填充，直到一个维度到达区域边界
      AVLayerVideoGravityResizeAspectFill, // 等比例填充，直到填充满整个视图区域，其中一个维度的部分区域会被裁剪
      */
-    
     self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    
-    self.previewLayer.frame = CGRectMake(0, 0,ScreenW, ScreenW * 4 / 3);
-    
-    [caramView.layer addSublayer:self.previewLayer];
-    
-    
-    CGFloat previewLayerY = CGRectGetMaxY(caramView.frame);
+    self.previewLayer.frame = CGRectMake(0, 40,ScreenW, ScreenW * 4 / 3);
+    [self.view.layer insertSublayer:self.previewLayer atIndex:0];
+    CGFloat previewLayerY = CGRectGetMaxY(self.previewLayer.frame);
+    //遮照view
+    ZLCameraView *caramView = [[ZLCameraView alloc] initWithFrame:self.previewLayer.frame];
+    caramView.backgroundColor = [UIColor clearColor];
+    caramView.delegate = self;
+    self.caramView = caramView;
+    //添加捏合手势
+    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchGesture:)];
+    pinch.delegate = self;
+    [caramView addGestureRecognizer:pinch];
+    [self.view addSubview:caramView];
     
     UIButton *button = [[UIButton alloc] init];
-    
-//    [button setTitle:@"PHOTO" forState:UIControlStateNormal];
-//    
-//    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    
     [button setBackgroundColor:[UIColor purpleColor]];
-    
     [button setImage:[UIImage imageNamed:@"btn_prisma_takephoto"] forState:UIControlStateNormal];
-    
     button.frame = CGRectMake(0, previewLayerY , ScreenW, ScreenH - previewLayerY);
     [button addTarget:self action:@selector(clickPHOTO) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
     
 }
 
+#pragma mark -返回按钮
 - (void) clickBackButton {
-    
-    self.previewLayer = nil;
-    [self dismissViewControllerAnimated:NO completion:nil];
+    CGFloat ScreenW = self.view.frame.size.width;
+    self.previewLayer.frame =  CGRectMake(0, 40,ScreenW, ScreenW * 4 / 3);
+    [self dismissViewControllerAnimated:YES completion:^{
+    }];
 }
 
+#pragma mark -镜头切换
 - (void) clickchangeButton {
     // 翻转
     [UIView beginAnimations:@"animation" context:nil];
@@ -293,20 +242,15 @@ typedef void(^lightBlock)();
             newInput = [AVCaptureDeviceInput deviceInputWithDevice:newCamera error:nil];
             
             [self.session beginConfiguration];
-            
             [self.session removeInput:input];
             [self.session addInput:newInput];
-            
-            // Changes take effect once the outermost commitConfiguration is invoked.
             [self.session commitConfiguration];
             break;
         }
     }
-    
-    
 }
 
-
+#pragma mark -相机状态
 - (AVCaptureDevice *)cameraWithPosition:(AVCaptureDevicePosition)position
 {
     NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
@@ -316,7 +260,7 @@ typedef void(^lightBlock)();
     return nil;
 }
 
-
+#pragma mark - 闪光灯的状态
 - (void) clickLightButton:(UIButton *)sender {
     
     if (self.lightCameraState < 0) {
@@ -337,18 +281,18 @@ typedef void(^lightBlock)();
             break;
         case 2:
             mode = AVCaptureFlashModeAuto;
-              [sender setImage:[UIImage imageNamed:@"flashAutoIcon"] forState:UIControlStateNormal];
+            [sender setImage:[UIImage imageNamed:@"flashAutoIcon"] forState:UIControlStateNormal];
             
             break;
         case 3:
             mode = AVCaptureFlashModeOff;
             
-             [sender setImage:[UIImage imageNamed:@"flashOffIcon"] forState:UIControlStateNormal];
+            [sender setImage:[UIImage imageNamed:@"flashOffIcon"] forState:UIControlStateNormal];
             break;
         default:
             mode = AVCaptureFlashModeOff;
             
-             [sender setImage:[UIImage imageNamed:@"flashOffIcon"] forState:UIControlStateNormal];
+            [sender setImage:[UIImage imageNamed:@"flashOffIcon"] forState:UIControlStateNormal];
             break;
     }
     if ([self.device isFlashModeSupported:mode])
@@ -370,8 +314,24 @@ typedef void(^lightBlock)();
     [self.session startRunning];
 }
 
+#pragma mark -ZLCameraViewDelegate
+- (void)cameraDidSelected:(ZLCameraView *)camera{
+    [self.device lockForConfiguration:nil];
+    [self.device setFocusMode:AVCaptureFocusModeAutoFocus];
+    [self.device setFocusPointOfInterest:CGPointMake(50,50)];
+    //操作完成后，记得进行unlock。
+    [self.device unlockForConfiguration];
+}
+
+#pragma mark -KVO
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if( [keyPath isEqualToString:@"adjustingFocus"] ){
+        NSLog(@"");
+    }
+}
+
+#pragma mark -拍照按钮
 - (void)clickPHOTO {
-    
     self.connection = [self.imageOutput connectionWithMediaType:AVMediaTypeVideo];
     
     /**
@@ -411,38 +371,32 @@ typedef void(^lightBlock)();
         //原图
         UIImage *image = [UIImage imageWithData:jpegData];
         
-        
         TOCropViewController *cropController = [[TOCropViewController alloc] initWithImage:image];
         cropController.delegate = self;
-        
-//        cropController.showActivitySheetOnDone = YES;
-        
         cropController.aspectRatioPickerButtonHidden = YES;
         cropController.aspectRatioLockEnabled = YES;
-        
         cropController.resetAspectRatioEnabled = NO;
-        
         cropController.customAspectRatio = CGSizeMake(1.0f, 1.0f);
-        
         [self presentViewController:cropController animated:YES completion:nil];
-        
-        CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault,imageDataSampleBuffer,kCMAttachmentMode_ShouldPropagate);
-        
         ALAuthorizationStatus author = [ALAssetsLibrary authorizationStatus];
         if (author == ALAuthorizationStatusRestricted || author == ALAuthorizationStatusDenied){
             //无权限
             return ;
         }
         
-        UIImageWriteToSavedPhotosAlbum(image, self, nil, NULL);
-        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-        [library writeImageDataToSavedPhotosAlbum:jpegData metadata:(__bridge id)attachments completionBlock:^(NSURL *assetURL, NSError *error) {
-            
-        }];
+       UIImageWriteToSavedPhotosAlbum(image, self, nil, NULL);
+        
+//        CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault,imageDataSampleBuffer,kCMAttachmentMode_ShouldPropagate);
+
+//        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+//        [library writeImageDataToSavedPhotosAlbum:jpegData metadata:(__bridge id)attachments completionBlock:^(NSURL *assetURL, NSError *error) {
+//            
+//        }];
         
     }];
 }
 
+#pragma mark -图片方向
 - (AVCaptureVideoOrientation)avOrientationForDeviceOrientation:(UIDeviceOrientation)deviceOrientation
 {
     AVCaptureVideoOrientation result = (AVCaptureVideoOrientation)deviceOrientation;
@@ -453,26 +407,23 @@ typedef void(^lightBlock)();
     return result;
 }
 
-
+#pragma mark -加速计通知,监听手机方向
 - (void)motionDeviceOrientationChanged:(NSNotification *)notification
 
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         
         self.deviceOrientation = [MotionOrientation sharedInstance].deviceOrientation;
-        
-        NSLog(@"----------------%ld",(long)self.deviceOrientation);
-        
     });
 }
 
-//缩放手势 用于调整焦距
+#pragma mark -缩放手势
 - (void)handlePinchGesture:(UIPinchGestureRecognizer *)recognizer{
     
     BOOL allTouchesAreOnThePreviewLayer = YES;
     NSUInteger numTouches = [recognizer numberOfTouches], i;
     for ( i = 0; i < numTouches; ++i ) {
-        CGPoint location = [recognizer locationOfTouch:i inView:self.backView];
+        CGPoint location = [recognizer locationOfTouch:i inView:self.caramView];
         CGPoint convertedLocation = [self.previewLayer convertPoint:location fromLayer:self.previewLayer.superlayer];
         if ( ! [self.previewLayer containsPoint:convertedLocation] ) {
             allTouchesAreOnThePreviewLayer = NO;
@@ -487,8 +438,6 @@ typedef void(^lightBlock)();
             self.effectiveScale = 1.0;
         }
         
-        NSLog(@"%f-------------->%f------------recognizerScale%f",self.effectiveScale,self.beginGestureScale,recognizer.scale);
-        
         CGFloat maxScaleAndCropFactor = [[self.imageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor];
         
         NSLog(@"%f",maxScaleAndCropFactor);
@@ -500,13 +449,10 @@ typedef void(^lightBlock)();
         [self.previewLayer setAffineTransform:CGAffineTransformMakeScale(self.effectiveScale, self.effectiveScale)];
         [CATransaction commit];
         
-        NSLog(@"-------%@",self.previewLayer);
-        
     }
-    
 }
 
-#pragma mark gestureRecognizer delegate
+#pragma mark GestureRecognizer Delegate 缩放手势
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
     if ( [gestureRecognizer isKindOfClass:[UIPinchGestureRecognizer class]] ) {
@@ -515,94 +461,13 @@ typedef void(^lightBlock)();
     return YES;
 }
 
-- (void)didClickButton:(UIImage *)img {
-    
-    // 1.先加载原图
-    
-    // 2.创建(开启)一个和原图一样大小的"位图上下文"
-    
-    //参数1 ->图形上下文的大小(单位是点)参数2 ->是否不透明参数3 ->一个点表示几个像素
-    
-    UIGraphicsBeginImageContextWithOptions(img.size,YES,0.0);
-    
-    // 3.获取刚才开启的图形上下文
-    
-    CGContextRef ctx =UIGraphicsGetCurrentContext();
-    
-    // 4.执行裁剪操作
-    
-    UIBezierPath *path = [UIBezierPath bezierPathWithRect:CGRectMake(0, 40, img.size.width,img.size.height - 104)];
-    
-    CGContextAddPath(ctx, path.CGPath);
-    
-    CGContextClip(ctx);
-    
-    // 5.把图片绘制到上下文中
-    
-    [img drawAtPoint:CGPointZero];
-    
-    // 6.从上下文中获取裁剪好的图片对象
-    
-    UIImage*imgCliped =UIGraphicsGetImageFromCurrentImageContext();
-    
-    //    UIImageWriteToSavedPhotosAlbum(imgCliped, self, nil, NULL);
-    
-    // 6.2关闭位图上下文
-    UIGraphicsEndImageContext();
-    
-}
-
-- (UIImage *)getImageByCuttingImage:(UIImage *)image Rect:(CGRect)rect{
-    
-    //大图bigImage
-    
-    //定义myImageRect，截图的区域
-    
-    CGRect myImageRect = rect;
-    
-    UIImage* bigImage= image;
-    
-    CGImageRef imageRef = bigImage.CGImage;
-    
-    CGImageRef subImageRef = CGImageCreateWithImageInRect(imageRef, myImageRect);
-    
-    CGSize size;
-    
-    size.width = rect.size.width;
-    
-    size.height = rect.size.height;
-    
-    UIGraphicsBeginImageContext(size);
-    
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    CGContextDrawImage(context, myImageRect, subImageRef);
-    
-    UIImage* smallImage = [UIImage imageWithCGImage:subImageRef];
-    
-    //    UIImageWriteToSavedPhotosAlbum(smallImage, self, nil, NULL);
-    
-    UIGraphicsEndImageContext();
-    
-    return smallImage;
-    
-}
-
-//屏幕的截取
-- (UIImage *)getSnapshotImage {
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)), NO, 1);
-    [self.view drawViewHierarchyInRect:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)) afterScreenUpdates:NO];
-    UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return snapshot;
-}
-
-# pragma mark -TOCropViewControllerDelegate
+# pragma mark -TOCropViewControllerDelegate 图片裁剪
 - (void)cropViewController:(TOCropViewController *)cropViewController didCropToImage:(UIImage *)image withRect:(CGRect)cropRect angle:(NSInteger)angle{
-
+    
     UIImageWriteToSavedPhotosAlbum(image, self, nil, NULL);
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
 //设置当前页面支持横竖屏，DEMO默认不支持横竖屏
 //-(UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
 //{

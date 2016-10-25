@@ -13,6 +13,7 @@
 		217172DC1D92656A00B89D7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 217172DA1D92656A00B89D7F /* LaunchScreen.storyboard */; };
 		217172E71D92656A00B89D7F /* CCPCustomCameraTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 217172E61D92656A00B89D7F /* CCPCustomCameraTests.m */; };
 		217172F21D92656A00B89D7F /* CCPCustomCameraUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 217172F11D92656A00B89D7F /* CCPCustomCameraUITests.m */; };
+		7E938F7B1DBF331F00EC428F /* ZLCameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E938F7A1DBF331F00EC428F /* ZLCameraView.m */; };
 		7E9DAFCC1DBEF0A200EBD8A5 /* TOCropViewControllerLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7E9DAFA21DBEF0A200EBD8A5 /* TOCropViewControllerLocalizable.strings */; };
 		7E9DAFCD1DBEF0A200EBD8A5 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7E9DAFAB1DBEF0A200EBD8A5 /* Info.plist */; };
 		7E9DAFCE1DBEF0A200EBD8A5 /* TOActivityCroppedImageProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E9DAFB11DBEF0A200EBD8A5 /* TOActivityCroppedImageProvider.m */; };
@@ -63,6 +64,8 @@
 		217172ED1D92656A00B89D7F /* CCPCustomCameraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CCPCustomCameraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		217172F11D92656A00B89D7F /* CCPCustomCameraUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CCPCustomCameraUITests.m; sourceTree = "<group>"; };
 		217172F31D92656A00B89D7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7E938F791DBF331F00EC428F /* ZLCameraView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLCameraView.h; sourceTree = "<group>"; };
+		7E938F7A1DBF331F00EC428F /* ZLCameraView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLCameraView.m; sourceTree = "<group>"; };
 		7E9DAFA31DBEF0A200EBD8A5 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/TOCropViewControllerLocalizable.strings; sourceTree = "<group>"; };
 		7E9DAFA41DBEF0A200EBD8A5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/TOCropViewControllerLocalizable.strings; sourceTree = "<group>"; };
 		7E9DAFA51DBEF0A200EBD8A5 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/TOCropViewControllerLocalizable.strings; sourceTree = "<group>"; };
@@ -282,6 +285,8 @@
 		7ED944201DB8C70D0083D7FA /* CCPCustomCamera */ = {
 			isa = PBXGroup;
 			children = (
+				7E938F791DBF331F00EC428F /* ZLCameraView.h */,
+				7E938F7A1DBF331F00EC428F /* ZLCameraView.m */,
 				7ED944231DB8C70D0083D7FA /* MotionOrientation.h */,
 				7ED944241DB8C70D0083D7FA /* MotionOrientation.m */,
 				7ED944211DB8C70D0083D7FA /* CCPTakePicturesController.h */,
@@ -443,6 +448,7 @@
 				7E9DAFD11DBEF0A200EBD8A5 /* UIImage+CropRotate.m in Sources */,
 				7E9DAFD41DBEF0A200EBD8A5 /* TOCropScrollView.m in Sources */,
 				7ED944261DB8C70D0083D7FA /* MotionOrientation.m in Sources */,
+				7E938F7B1DBF331F00EC428F /* ZLCameraView.m in Sources */,
 				7E9DAFD31DBEF0A200EBD8A5 /* TOCropOverlayView.m in Sources */,
 				7ED944251DB8C70D0083D7FA /* CCPTakePicturesController.m in Sources */,
 				7E9DAFD21DBEF0A200EBD8A5 /* TOCropViewController.m in Sources */,
