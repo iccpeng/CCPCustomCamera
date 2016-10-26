@@ -62,13 +62,13 @@
     self.count++;
 }
 
-
+//对焦框的绘制
 - (void)drawRect:(CGRect)rect {
     
     [super drawRect:rect];
     if (self.isFoucsEnd) {
         CGFloat rectValue = CCPDisplayLink - self.count % CCPDisplayLink;
-        CGRect rectangle = CGRectMake(self.point.x - rectValue / 2.0, self.point.y - rectValue / 2.0, rectValue, rectValue);
+        CGRect rectangle = CGRectMake(self.point.x - rectValue / 2.0, self.point.y - rectValue / 2.0, rectValue * 1.3, rectValue * 1.3);
         //获得上下文句柄
         CGContextRef currentContext = UIGraphicsGetCurrentContext();
         if (rectValue <= 25) {

@@ -26,6 +26,7 @@
 		7E6414171DC047ED00280A2C /* TOCropToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E6414081DC047ED00280A2C /* TOCropToolbar.m */; };
 		7E6414181DC047ED00280A2C /* TOCropView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E64140A1DC047ED00280A2C /* TOCropView.m */; };
 		7E64141B1DC0486A00280A2C /* CCPCameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E64141A1DC0486A00280A2C /* CCPCameraView.m */; };
+		7E64141E1DC088EA00280A2C /* UIView+CCPExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E64141D1DC088EA00280A2C /* UIView+CCPExtension.m */; };
 		7ED944071DB88ED70083D7FA /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ED944061DB88ED70083D7FA /* CoreMotion.framework */; };
 		7ED944091DB88EE50083D7FA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ED944081DB88EE50083D7FA /* CoreGraphics.framework */; };
 		7ED944101DB8C58C0083D7FA /* UIImage+ST.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ED9440E1DB8C58C0083D7FA /* UIImage+ST.m */; };
@@ -107,6 +108,8 @@
 		7E64140C1DC047ED00280A2C /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/TOCropViewControllerLocalizable.strings"; sourceTree = "<group>"; };
 		7E6414191DC0486A00280A2C /* CCPCameraView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPCameraView.h; sourceTree = "<group>"; };
 		7E64141A1DC0486A00280A2C /* CCPCameraView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPCameraView.m; sourceTree = "<group>"; };
+		7E64141C1DC088EA00280A2C /* UIView+CCPExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+CCPExtension.h"; sourceTree = "<group>"; };
+		7E64141D1DC088EA00280A2C /* UIView+CCPExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+CCPExtension.m"; sourceTree = "<group>"; };
 		7ED944061DB88ED70083D7FA /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		7ED944081DB88EE50083D7FA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		7ED9440D1DB8C58B0083D7FA /* UIImage+ST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ST.h"; sourceTree = "<group>"; };
@@ -303,6 +306,8 @@
 		7ED944201DB8C70D0083D7FA /* CCPCustomCamera */ = {
 			isa = PBXGroup;
 			children = (
+				7E64141C1DC088EA00280A2C /* UIView+CCPExtension.h */,
+				7E64141D1DC088EA00280A2C /* UIView+CCPExtension.m */,
 				7ED944211DB8C70D0083D7FA /* CCPTakePicturesController.h */,
 				7ED944221DB8C70D0083D7FA /* CCPTakePicturesController.m */,
 				7E6414191DC0486A00280A2C /* CCPCameraView.h */,
@@ -475,6 +480,7 @@
 				217172CE1D92656A00B89D7F /* main.m in Sources */,
 				7ED9441A1DB8C59F0083D7FA /* AppDelegate.m in Sources */,
 				7E6414131DC047ED00280A2C /* UIImage+CropRotate.m in Sources */,
+				7E64141E1DC088EA00280A2C /* UIView+CCPExtension.m in Sources */,
 				7E6414141DC047ED00280A2C /* TOCropViewController.m in Sources */,
 				7E6414171DC047ED00280A2C /* TOCropToolbar.m in Sources */,
 			);
@@ -647,7 +653,7 @@
 				INFOPLIST_FILE = CCPCustomCamera/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = CCP.CCPCustomCamer;
+				PRODUCT_BUNDLE_IDENTIFIER = CCP.CCPCustomCamera;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -662,7 +668,7 @@
 				INFOPLIST_FILE = CCPCustomCamera/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = CCP.CCPCustomCamer;
+				PRODUCT_BUNDLE_IDENTIFIER = CCP.CCPCustomCamera;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

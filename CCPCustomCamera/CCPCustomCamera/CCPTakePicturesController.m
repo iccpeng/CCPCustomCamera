@@ -13,6 +13,7 @@
 #import "MotionOrientation.h"
 #import "TOCropViewController.h"
 #import "CCPCameraView.h"
+#import "UIView+CCPExtension.h"
 
 typedef void(^lightBlock)();
 
@@ -72,9 +73,14 @@ typedef void(^lightBlock)();
  *  闪光灯状态
  */
 @property (nonatomic,assign) NSInteger lightCameraState;
-
+/**
+ *  遮照View
+ */
 @property (nonatomic,weak) CCPCameraView *caramView;
-
+/**
+ *  缩略图
+ */
+@property (nonatomic,weak) UIImageView *bottomImageView;
 @end
 
 @implementation CCPTakePicturesController
@@ -82,6 +88,8 @@ typedef void(^lightBlock)();
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
+    //默认开启截图功能
+    self.isCanCut = YES;
     //判断相机 是否可以使用
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         
@@ -102,6 +110,7 @@ typedef void(^lightBlock)();
     
     [self makeUI];
 }
+
 
 - (BOOL)prefersStatusBarHidden
 {
@@ -128,7 +137,10 @@ typedef void(^lightBlock)();
         [self.session stopRunning];
     }
 }
-
+#pragma mark -重写 isCanCut 的 setter 方法
+- (void)setIsCanCut:(BOOL)isCanCut {
+    _isCanCut = isCanCut;
+}
 #pragma mark -UI界面布局及对象的初始化
 - (void) makeUI {
     //设置图层的frame
@@ -202,13 +214,23 @@ typedef void(^lightBlock)();
     [caramView addGestureRecognizer:pinch];
     [self.view addSubview:caramView];
     
+    //bottomView
+    CGRect rect = CGRectMake(0, previewLayerY , ScreenW, ScreenH - previewLayerY);
+    UIView *bottomView = [[UIView alloc] initWithFrame:rect];
+    bottomView.backgroundColor = [UIColor blackColor];
+    [self.view addSubview:bottomView];
     UIButton *button = [[UIButton alloc] init];
-    [button setBackgroundColor:[UIColor purpleColor]];
     [button setImage:[UIImage imageNamed:@"btn_prisma_takephoto"] forState:UIControlStateNormal];
-    button.frame = CGRectMake(0, previewLayerY , ScreenW, ScreenH - previewLayerY);
+    button.frame = CGRectMake(0, 0, 60, 60);
+    button.centerX = bottomView.centerX;
+    button.centerY = bottomView.height / 2;
     [button addTarget:self action:@selector(clickPHOTO) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:button];
-    
+    [bottomView addSubview:button];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 0, bottomView.height - 25, bottomView.height - 25)];
+    imageView.centerY = bottomView.height / 2;
+    imageView.backgroundColor = [UIColor redColor];
+    [bottomView addSubview:imageView];
+    self.bottomImageView = imageView;
 }
 
 #pragma mark -返回按钮
@@ -324,7 +346,7 @@ typedef void(^lightBlock)();
     [self.device unlockForConfiguration];
 }
 
-#pragma mark -KVO
+#pragma mark -KVO,获取对焦回调
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if( [keyPath isEqualToString:@"adjustingFocus"] ){
         NSLog(@"对焦-----对焦----对焦");
@@ -370,15 +392,25 @@ typedef void(^lightBlock)();
         NSData *jpegData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
         //原图
         UIImage *image = [UIImage imageWithData:jpegData];
-        //图片截取
-        TOCropViewController *cropController = [[TOCropViewController alloc] initWithImage:image];
-        cropController.delegate = self;
-        cropController.aspectRatioPickerButtonHidden = YES;
-        cropController.aspectRatioLockEnabled = YES;
-        cropController.resetAspectRatioEnabled = NO;
-        cropController.aspectRatioPreset = TOCropViewControllerAspectRatioPresetSquare;
-        cropController.cropView.cropBoxResizeEnabled = NO;
-        [self presentViewController:cropController animated:NO completion:nil];
+        
+#pragma mark - 图片的截取,通过对不同属性的设置获取目标的截图样式
+        
+        if (self.isCanCut) {
+            
+            TOCropViewController *cropController = [[TOCropViewController alloc] initWithImage:image];
+            cropController.delegate = self;
+            //隐藏比例选择按钮
+            cropController.aspectRatioPickerButtonHidden = YES;
+            //重置后缩小到当前设置的长宽比
+            cropController.resetAspectRatioEnabled = NO;
+            //截图的展示样式
+            cropController.aspectRatioPreset = TOCropViewControllerAspectRatioPresetSquare;
+            //是否可以手动拖动
+            cropController.cropView.cropBoxResizeEnabled = NO;
+            
+            [self presentViewController:cropController animated:NO completion:nil];
+        }
+        
         ALAuthorizationStatus author = [ALAssetsLibrary authorizationStatus];
         if (author == ALAuthorizationStatusRestricted || author == ALAuthorizationStatusDenied){
             //无权限
@@ -386,6 +418,8 @@ typedef void(^lightBlock)();
         }
         
        UIImageWriteToSavedPhotosAlbum(image, self, nil, NULL);
+        
+       self.bottomImageView.image = image;
         
 //        CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault,imageDataSampleBuffer,kCMAttachmentMode_ShouldPropagate);
 
@@ -463,6 +497,10 @@ typedef void(^lightBlock)();
 
 # pragma mark -TOCropViewControllerDelegate 图片裁剪
 - (void)cropViewController:(TOCropViewController *)cropViewController didCropToImage:(UIImage *)image withRect:(CGRect)cropRect angle:(NSInteger)angle{
+    
+    if (self.iconImage) {
+        self.iconImage(image);
+    }
     
     UIImageWriteToSavedPhotosAlbum(image, self, nil, NULL);
     [self dismissViewControllerAnimated:NO completion:nil];
