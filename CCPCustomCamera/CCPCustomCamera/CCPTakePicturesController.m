@@ -12,11 +12,11 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "MotionOrientation.h"
 #import "TOCropViewController.h"
-#import "ZLCameraView.h"
+#import "CCPCameraView.h"
 
 typedef void(^lightBlock)();
 
-@interface CCPTakePicturesController ()<UIGestureRecognizerDelegate,AVCaptureMetadataOutputObjectsDelegate,TOCropViewControllerDelegate,ZLCameraViewDelegate>
+@interface CCPTakePicturesController ()<UIGestureRecognizerDelegate,AVCaptureMetadataOutputObjectsDelegate,TOCropViewControllerDelegate,CCPCameraViewDelegate>
 
 //创建相机相关的属性
 
@@ -73,7 +73,7 @@ typedef void(^lightBlock)();
  */
 @property (nonatomic,assign) NSInteger lightCameraState;
 
-@property (nonatomic,weak) ZLCameraView *caramView;
+@property (nonatomic,weak) CCPCameraView *caramView;
 
 @end
 
@@ -191,7 +191,8 @@ typedef void(^lightBlock)();
     [self.view.layer insertSublayer:self.previewLayer atIndex:0];
     CGFloat previewLayerY = CGRectGetMaxY(self.previewLayer.frame);
     //遮照view
-    ZLCameraView *caramView = [[ZLCameraView alloc] initWithFrame:self.previewLayer.frame];
+    CCPCameraView *caramView = [[CCPCameraView alloc] init];
+    caramView.frame = self.previewLayer.frame;
     caramView.backgroundColor = [UIColor clearColor];
     caramView.delegate = self;
     self.caramView = caramView;
@@ -314,8 +315,8 @@ typedef void(^lightBlock)();
     [self.session startRunning];
 }
 
-#pragma mark -ZLCameraViewDelegate
-- (void)cameraDidSelected:(ZLCameraView *)camera{
+#pragma mark -CCPCameraViewDelegate
+- (void)cameraDidSelected:(CCPCameraView *)camera{
     [self.device lockForConfiguration:nil];
     [self.device setFocusMode:AVCaptureFocusModeAutoFocus];
     [self.device setFocusPointOfInterest:CGPointMake(50,50)];
@@ -326,10 +327,9 @@ typedef void(^lightBlock)();
 #pragma mark -KVO
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if( [keyPath isEqualToString:@"adjustingFocus"] ){
-        NSLog(@"");
+        NSLog(@"对焦-----对焦----对焦");
     }
 }
-
 #pragma mark -拍照按钮
 - (void)clickPHOTO {
     self.connection = [self.imageOutput connectionWithMediaType:AVMediaTypeVideo];
@@ -370,14 +370,15 @@ typedef void(^lightBlock)();
         NSData *jpegData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
         //原图
         UIImage *image = [UIImage imageWithData:jpegData];
-        
+        //图片截取
         TOCropViewController *cropController = [[TOCropViewController alloc] initWithImage:image];
         cropController.delegate = self;
         cropController.aspectRatioPickerButtonHidden = YES;
         cropController.aspectRatioLockEnabled = YES;
         cropController.resetAspectRatioEnabled = NO;
-        cropController.customAspectRatio = CGSizeMake(1.0f, 1.0f);
-        [self presentViewController:cropController animated:YES completion:nil];
+        cropController.aspectRatioPreset = TOCropViewControllerAspectRatioPresetSquare;
+        cropController.cropView.cropBoxResizeEnabled = NO;
+        [self presentViewController:cropController animated:NO completion:nil];
         ALAuthorizationStatus author = [ALAssetsLibrary authorizationStatus];
         if (author == ALAuthorizationStatusRestricted || author == ALAuthorizationStatusDenied){
             //无权限
@@ -431,7 +432,7 @@ typedef void(^lightBlock)();
         }
     }
     
-    if ( allTouchesAreOnThePreviewLayer ) {
+    if (allTouchesAreOnThePreviewLayer) {
         
         self.effectiveScale = self.beginGestureScale * recognizer.scale;
         if (self.effectiveScale < 1.0){
@@ -440,7 +441,6 @@ typedef void(^lightBlock)();
         
         CGFloat maxScaleAndCropFactor = [[self.imageOutput connectionWithMediaType:AVMediaTypeVideo] videoMaxScaleAndCropFactor];
         
-        NSLog(@"%f",maxScaleAndCropFactor);
         if (self.effectiveScale > maxScaleAndCropFactor)
             self.effectiveScale = maxScaleAndCropFactor;
         
@@ -457,7 +457,7 @@ typedef void(^lightBlock)();
 {
     if ( [gestureRecognizer isKindOfClass:[UIPinchGestureRecognizer class]] ) {
         self.beginGestureScale = self.effectiveScale;
-    }
+}
     return YES;
 }
 
@@ -465,6 +465,7 @@ typedef void(^lightBlock)();
 - (void)cropViewController:(TOCropViewController *)cropViewController didCropToImage:(UIImage *)image withRect:(CGRect)cropRect angle:(NSInteger)angle{
     
     UIImageWriteToSavedPhotosAlbum(image, self, nil, NULL);
+    [self dismissViewControllerAnimated:NO completion:nil];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
