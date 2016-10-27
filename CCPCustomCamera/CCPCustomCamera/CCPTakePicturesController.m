@@ -111,7 +111,6 @@ typedef void(^lightBlock)();
     [self makeUI];
 }
 
-
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
@@ -226,7 +225,9 @@ typedef void(^lightBlock)();
     button.centerY = bottomView.height / 2;
     [button addTarget:self action:@selector(clickPHOTO) forControlEvents:UIControlEventTouchUpInside];
     [bottomView addSubview:button];
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 0, bottomView.height - 25, bottomView.height - 25)];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 0, bottomView.height/2, bottomView.height/2)];
+    imageView.layer.cornerRadius = 1.0f;
+    imageView.layer.masksToBounds = YES;
     imageView.centerY = bottomView.height / 2;
     imageView.backgroundColor = [UIColor redColor];
     [bottomView addSubview:imageView];
