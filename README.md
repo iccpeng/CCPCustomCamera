@@ -2,6 +2,7 @@
 
 工作之余，研究了一下相机的自定义，在这里整理成篇仅供参考学习，希望可以给大家带来些许帮助，也期待大家的批评指正。
  GIF 示例:
+ 
 ![ccpcamera.gif](http://upload-images.jianshu.io/upload_images/1764698-801f8a5ed322ab64.gif?imageMogr2/auto-orient/strip)
 
 iOS开发中调用相机来获取照片时，如果对相机样式没有过多的要求，通常我们会调用UIImagePickerController这个系统封装好的控件。但是有时UIImagePickerController无法满足项目的需求，例如我们需要自定义的相机样式，此时则需要自己构造一个相机控件，因此需要使用AVFoundation框架进行相机的自定义。
