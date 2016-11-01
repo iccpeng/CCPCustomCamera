@@ -16,7 +16,7 @@ UIImagePickerController无法满足项目的需求，例如我们需要自定义
 ```
 #import <AVFoundation/AVFoundation.h>
 ```
-######一、创建相机相关的属性
+####一、创建相机相关的属性
 ```
 /**
  *  用来获取相机设备的一些属性
@@ -79,13 +79,13 @@ UIImagePickerController无法满足项目的需求，例如我们需要自定义
  */
 @property (nonatomic,weak) CCPCameraView *caramView;
 ```
-######二、相机界面的布局
+####二、相机界面的布局
 
 图片示意图
 
 ![ccpCa.png](http://upload-images.jianshu.io/upload_images/1764698-e3aa48775fdaae97.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-######三、主要功能介绍
+####三、主要功能介绍
 
 1.拍照按钮
 
@@ -131,7 +131,7 @@ home键盘朝下/home键朝右/home键朝上/home键朝左，还有两种就是�
 
 5.闪光灯功能
 
-######四、下一步将要完善的功能
+####四、下一步将要完善的功能
 
 1.图片浏览器功能；
 
