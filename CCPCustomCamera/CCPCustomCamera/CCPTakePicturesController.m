@@ -143,12 +143,12 @@ typedef void(^lightBlock)();
 #pragma mark -UI界面布局及对象的初始化
 - (void) makeUI {
     
-    
     //设置图层的frame
     CGFloat ScreenW = self.view.frame.size.width;
     CGFloat ScreenH = self.view.frame.size.height;
     UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenW, 40)];
     headView.backgroundColor = [UIColor blackColor];
+    
     //返回按钮
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 40)];
     [backButton addTarget:self action:@selector(clickBackButton) forControlEvents:UIControlEventTouchUpInside];
