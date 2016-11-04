@@ -64,7 +64,6 @@
 
 //对焦框的绘制
 - (void)drawRect:(CGRect)rect {
-    
     [super drawRect:rect];
     if (self.isFoucsEnd) {
         CGFloat rectValue = CCPDisplayLink - self.count % CCPDisplayLink;

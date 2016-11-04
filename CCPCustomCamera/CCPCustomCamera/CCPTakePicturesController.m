@@ -142,6 +142,8 @@ typedef void(^lightBlock)();
 }
 #pragma mark -UI界面布局及对象的初始化
 - (void) makeUI {
+    
+    
     //设置图层的frame
     CGFloat ScreenW = self.view.frame.size.width;
     CGFloat ScreenH = self.view.frame.size.height;

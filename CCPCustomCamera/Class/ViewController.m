@@ -42,7 +42,7 @@
     
     CCPTakePicturesController *picturesVC = [[CCPTakePicturesController alloc] init];
     __weak typeof(self) weakSelf = self;
-    
+    //获取截图
     picturesVC.iconImage = ^(UIImage *iconImage) {
         
         weakSelf.iconImageView.image = iconImage;
