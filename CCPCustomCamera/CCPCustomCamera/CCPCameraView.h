@@ -1,7 +1,6 @@
 //
 //  CCPCameraView.h
 //  CCPCustomCamera
-//
 //  Created by CCP on 2016/10/26.
 //  Copyright © 2016年 CCP. All rights reserved.
 //
