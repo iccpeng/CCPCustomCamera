@@ -58,8 +58,10 @@
 }
 
 - (void) refreshView : (CADisplayLink *) link{
+  
     [self setNeedsDisplay];
     self.count++;
+    
 }
 
 //对焦框的绘制

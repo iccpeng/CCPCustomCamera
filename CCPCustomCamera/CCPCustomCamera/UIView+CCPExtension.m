@@ -76,10 +76,12 @@
     return self.center.x;
 }
 
+
 - (CGFloat)height
 {
     return self.frame.size.height;
 }
+
 
 - (CGFloat)x
 {
