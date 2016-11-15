@@ -26,6 +26,18 @@
 
 @implementation CCPPhotoAlbumViewController
 
+/*
+ 
+ 在 iOS 设备中，照片是相当重要的一部分。在 iOS8.0之前，开发者只能使用 AssetsLibrary 框架来访问设备的照片库。而在 iOS8 之后，苹果提供了一个名为 PhotoKit 的框架，一个可以让应用更好地与设备照片库对接的框架.
+ 由于市面上有一部分应用还支持iOS7,同时为了更加全面的学习,在此将整理AssetsLibrary 框架与 PhotoKit 框架的相关知识,供大家参考学习.
+ 
+ 参考:
+ http://kayosite.com/ios-development-and-detail-of-photo-framework.html
+ http://www.jianshu.com/p/535bfe3c328f
+ http://www.jianshu.com/p/cc85282fac5e
+ 在这里对原文作者表示感谢!
+ */
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self makeUI];
@@ -192,8 +204,6 @@
 - (void) iOSSelectAfter_iOS8:(NSInteger)tag {
     
 }
-
-
 
 
 - (void) clickTheBtn {
