@@ -13,6 +13,7 @@
 		217172DC1D92656A00B89D7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 217172DA1D92656A00B89D7F /* LaunchScreen.storyboard */; };
 		217172E71D92656A00B89D7F /* CCPCustomCameraTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 217172E61D92656A00B89D7F /* CCPCustomCameraTests.m */; };
 		217172F21D92656A00B89D7F /* CCPCustomCameraUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 217172F11D92656A00B89D7F /* CCPCustomCameraUITests.m */; };
+		7E4004DD1DD9B959000D3AAD /* CCPPhotoAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4004DC1DD9B959000D3AAD /* CCPPhotoAlbumViewController.m */; };
 		7E64141B1DC0486A00280A2C /* CCPCameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E64141A1DC0486A00280A2C /* CCPCameraView.m */; };
 		7E64141E1DC088EA00280A2C /* UIView+CCPExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E64141D1DC088EA00280A2C /* UIView+CCPExtension.m */; };
 		7E64144E1DC090F400280A2C /* MotionOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E6414221DC090F400280A2C /* MotionOrientation.m */; };
@@ -27,6 +28,8 @@
 		7E6414571DC090F400280A2C /* TOCropScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E6414471DC090F400280A2C /* TOCropScrollView.m */; };
 		7E6414581DC090F400280A2C /* TOCropToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E6414491DC090F400280A2C /* TOCropToolbar.m */; };
 		7E6414591DC090F400280A2C /* TOCropView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E64144B1DC090F400280A2C /* TOCropView.m */; };
+		7E6926261DDA9CA200F54FEE /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E6926251DDA9CA200F54FEE /* AssetsLibrary.framework */; };
+		7E69262C1DDAD46100F54FEE /* CCPShowPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E69262B1DDAD46100F54FEE /* CCPShowPhotoViewController.m */; };
 		7ED944071DB88ED70083D7FA /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ED944061DB88ED70083D7FA /* CoreMotion.framework */; };
 		7ED944091DB88EE50083D7FA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ED944081DB88EE50083D7FA /* CoreGraphics.framework */; };
 		7ED944101DB8C58C0083D7FA /* UIImage+ST.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ED9440E1DB8C58C0083D7FA /* UIImage+ST.m */; };
@@ -65,6 +68,8 @@
 		217172ED1D92656A00B89D7F /* CCPCustomCameraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CCPCustomCameraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		217172F11D92656A00B89D7F /* CCPCustomCameraUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CCPCustomCameraUITests.m; sourceTree = "<group>"; };
 		217172F31D92656A00B89D7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7E4004DB1DD9B959000D3AAD /* CCPPhotoAlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPPhotoAlbumViewController.h; sourceTree = "<group>"; };
+		7E4004DC1DD9B959000D3AAD /* CCPPhotoAlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPPhotoAlbumViewController.m; sourceTree = "<group>"; };
 		7E6414191DC0486A00280A2C /* CCPCameraView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPCameraView.h; sourceTree = "<group>"; };
 		7E64141A1DC0486A00280A2C /* CCPCameraView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPCameraView.m; sourceTree = "<group>"; };
 		7E64141C1DC088EA00280A2C /* UIView+CCPExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+CCPExtension.h"; sourceTree = "<group>"; };
@@ -110,6 +115,9 @@
 		7E64144B1DC090F400280A2C /* TOCropView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TOCropView.m; sourceTree = "<group>"; };
 		7E64144C1DC090F400280A2C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/TOCropViewControllerLocalizable.strings"; sourceTree = "<group>"; };
 		7E64144D1DC090F400280A2C /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/TOCropViewControllerLocalizable.strings"; sourceTree = "<group>"; };
+		7E6926251DDA9CA200F54FEE /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		7E69262A1DDAD46100F54FEE /* CCPShowPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPShowPhotoViewController.h; sourceTree = "<group>"; };
+		7E69262B1DDAD46100F54FEE /* CCPShowPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPShowPhotoViewController.m; sourceTree = "<group>"; };
 		7ED944061DB88ED70083D7FA /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		7ED944081DB88EE50083D7FA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		7ED9440D1DB8C58B0083D7FA /* UIImage+ST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ST.h"; sourceTree = "<group>"; };
@@ -127,6 +135,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E6926261DDA9CA200F54FEE /* AssetsLibrary.framework in Frameworks */,
 				7ED944091DB88EE50083D7FA /* CoreGraphics.framework in Frameworks */,
 				7ED944071DB88ED70083D7FA /* CoreMotion.framework in Frameworks */,
 			);
@@ -276,6 +285,7 @@
 		7ED944051DB88ED70083D7FA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7E6926251DDA9CA200F54FEE /* AssetsLibrary.framework */,
 				7ED944081DB88EE50083D7FA /* CoreGraphics.framework */,
 				7ED944061DB88ED70083D7FA /* CoreMotion.framework */,
 			);
@@ -312,6 +322,10 @@
 				7ED944221DB8C70D0083D7FA /* CCPTakePicturesController.m */,
 				7E6414191DC0486A00280A2C /* CCPCameraView.h */,
 				7E64141A1DC0486A00280A2C /* CCPCameraView.m */,
+				7E4004DB1DD9B959000D3AAD /* CCPPhotoAlbumViewController.h */,
+				7E4004DC1DD9B959000D3AAD /* CCPPhotoAlbumViewController.m */,
+				7E69262A1DDAD46100F54FEE /* CCPShowPhotoViewController.h */,
+				7E69262B1DDAD46100F54FEE /* CCPShowPhotoViewController.m */,
 			);
 			path = CCPCustomCamera;
 			sourceTree = "<group>";
@@ -471,6 +485,7 @@
 				7E6414551DC090F400280A2C /* TOCropViewController.m in Sources */,
 				7ED9441B1DB8C59F0083D7FA /* ViewController.m in Sources */,
 				7E6414591DC090F400280A2C /* TOCropView.m in Sources */,
+				7E69262C1DDAD46100F54FEE /* CCPShowPhotoViewController.m in Sources */,
 				7E6414581DC090F400280A2C /* TOCropToolbar.m in Sources */,
 				7E6414561DC090F400280A2C /* TOCropOverlayView.m in Sources */,
 				7E6414511DC090F400280A2C /* TOActivityCroppedImageProvider.m in Sources */,
@@ -480,6 +495,7 @@
 				7E6414541DC090F400280A2C /* UIImage+CropRotate.m in Sources */,
 				7E6414521DC090F400280A2C /* TOCroppedImageAttributes.m in Sources */,
 				7E64141B1DC0486A00280A2C /* CCPCameraView.m in Sources */,
+				7E4004DD1DD9B959000D3AAD /* CCPPhotoAlbumViewController.m in Sources */,
 				217172CE1D92656A00B89D7F /* main.m in Sources */,
 				7ED9441A1DB8C59F0083D7FA /* AppDelegate.m in Sources */,
 				7E64141E1DC088EA00280A2C /* UIView+CCPExtension.m in Sources */,

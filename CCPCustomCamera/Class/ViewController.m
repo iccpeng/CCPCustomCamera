@@ -9,6 +9,7 @@
 
 #import "ViewController.h"
 #import "CCPTakePicturesController.h"
+#import "CCPPhotoAlbumViewController.h"
 
 @interface ViewController ()
 
@@ -52,6 +53,13 @@
     [self presentViewController:picturesVC animated:YES completion:nil];
 }
 
+- (IBAction)clickPhotoAlbumBtn:(UIButton *)sender {
+    
+    CCPPhotoAlbumViewController *photoAlbumVC = [[CCPPhotoAlbumViewController alloc] init];
+    
+    [self presentViewController:photoAlbumVC animated:YES completion:nil];
+    
+}
 
 
 @end
