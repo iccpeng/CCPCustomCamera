@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface CCPShowPhotoVC : UIViewController
-
+@property (nonatomic,strong) NSArray *imageArray;
 @end

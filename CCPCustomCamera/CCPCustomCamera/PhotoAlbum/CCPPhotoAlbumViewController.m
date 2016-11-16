@@ -9,6 +9,7 @@
 #import "CCPPhotoAlbumViewController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "CCPShowPhotoViewController.h"
+#import "CCPShowPhotoVC.h"
 
 @interface CCPPhotoAlbumViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -51,6 +52,7 @@
 
 #pragma mark -tableView Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    
     return self.assetsArray.count;
 }
 
@@ -67,9 +69,11 @@
 
 #pragma mark -tableView Delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    CCPShowPhotoViewController *showPhotoVC = [[CCPShowPhotoViewController alloc] init];
+//    CCPShowPhotoViewController *showPhotoVC = [[CCPShowPhotoViewController alloc] init];
+    CCPShowPhotoVC *photoVC = [[CCPShowPhotoVC alloc] init];
     [self iOSSelectBefore_iOS8:indexPath.row];
-    [self presentViewController:showPhotoVC animated:YES completion:nil];
+    photoVC.imageArray = self.imagesAssetArray;
+    [self presentViewController:photoVC animated:YES completion:nil];
 }
 
 #pragma mark -UI布局

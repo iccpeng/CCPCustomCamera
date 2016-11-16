@@ -45,7 +45,6 @@
     
     _imageArray = imageArray;
     
-//    [self.showTableView reloadData];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -64,17 +63,18 @@
         
         cell.textLabel.text = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
         cell.imageView.image = self.imageArray[indexPath.row];
+        
     }
     return cell;
 }
 
+
 - (void) clickTheBtn {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
 - (void)didReceiveMemoryWarning {
-    
     [super didReceiveMemoryWarning];
-    
 }
 
 @end
