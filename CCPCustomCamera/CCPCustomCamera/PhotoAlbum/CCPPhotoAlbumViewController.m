@@ -98,7 +98,7 @@
 }
 #pragma mark -系统版本判断
 - (BOOL) iOSIsbefore_iOS8 {
-    return [[[UIDevice currentDevice] systemVersion] floatValue] < 9.0 ?1:0;
+    return [[[UIDevice currentDevice] systemVersion] floatValue] <= 9.0 ?1:0;
 }
 
 //系统版本小于8.0

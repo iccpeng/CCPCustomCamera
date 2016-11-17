@@ -165,6 +165,14 @@
     return collectionCell;
 }
 
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+      XLPhotoBrowser *browser = [XLPhotoBrowser showPhotoBrowserWithImages:self.self.imageArray currentImageIndex:indexPath.row];
+    browser.browserStyle = XLPhotoBrowserStylePageControl;
+    
+}
+
 #pragma mark -UI布局
 - (void) makeUI {
     
@@ -193,9 +201,34 @@
     NSLog(@"()()()____________()()()%@",self.selectedImageArray);
     
     // 快速创建并进入浏览模式
-//    XLPhotoBrowser *browser = [XLPhotoBrowser showPhotoBrowserWithCurrentImageIndex:tap.view.tag imageCount:self.images.count datasource:self];
+// [XLPhotoBrowser showPhotoBrowserWithImages:self.selectedImageArray currentImageIndex:self.selectedImageArray.count - 1];
+    
+    XLPhotoBrowser *browser = [XLPhotoBrowser showPhotoBrowserWithImages:self.self.selectedImageArray currentImageIndex:0];
+    browser.browserStyle = XLPhotoBrowserStyleIndexLabel;
+    // 设置长按手势弹出的地步ActionSheet数据,不实现此方法则没有长按手势
+    [browser setActionSheetWithTitle:nil delegate:self cancelButtonTitle:@"取消" deleteButtonTitle:nil otherButtonTitles:@"保存图片",nil];
     
 }
+
+- (void)photoBrowser:(XLPhotoBrowser *)browser clickActionSheetIndex:(NSInteger)actionSheetindex currentImageIndex:(NSInteger)currentImageIndex
+{
+    switch (actionSheetindex) {
+        case 0: // 保存
+        {
+            NSLog(@"点击了actionSheet索引是:%zd , 当前展示的图片索引是:%zd",actionSheetindex,currentImageIndex);
+            [browser saveCurrentShowImage];
+        }
+            break;
+        default:
+        {
+            NSLog(@"点击了actionSheet索引是:%zd , 当前展示的图片索引是:%zd",actionSheetindex,currentImageIndex);
+        }
+            break;
+    }
+}
+
+
+
 
 - (void) clickTheBtn {
     [self dismissViewControllerAnimated:YES completion:nil];

@@ -437,6 +437,11 @@
     [self.indicatorView removeFromSuperview];
     
     UILabel *label = [[UILabel alloc] init];
+    if (error) {
+        label.text = XLPhotoBrowserSaveImageFailText;
+    } else {
+        label.text = XLPhotoBrowserSaveImageSuccessText;
+    }
     label.textColor = [UIColor whiteColor];
     label.backgroundColor = [UIColor colorWithRed:0.1f green:0.1f blue:0.1f alpha:0.90f];
     label.layer.cornerRadius = 5;
@@ -447,11 +452,6 @@
     label.font = [UIFont boldSystemFontOfSize:17];
     [[UIApplication sharedApplication].keyWindow addSubview:label];
     [[UIApplication sharedApplication].keyWindow bringSubviewToFront:label];
-    if (error) {
-        label.text = XLPhotoBrowserSaveImageFailText;
-    } else {
-        label.text = XLPhotoBrowserSaveImageSuccessText;
-    }
     [label performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:1.0];
 }
 
