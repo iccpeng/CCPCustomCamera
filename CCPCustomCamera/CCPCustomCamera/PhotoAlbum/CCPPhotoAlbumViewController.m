@@ -8,6 +8,7 @@
 
 #import "CCPPhotoAlbumViewController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <Photos/Photos.h>
 #import "CCPShowPhotoViewController.h"
 #import "CCPShowPhotoVC.h"
 
@@ -16,6 +17,8 @@
 @property (nonatomic,strong) ALAssetsLibrary *assetsLibrary;
 
 @property (nonatomic,strong) NSMutableArray *assetsArray;
+
+@property (nonatomic,strong) NSMutableArray *nameArray;
 
 @property (nonatomic,strong) NSMutableArray *imagesAssetArray;
 
@@ -36,6 +39,7 @@
  http://kayosite.com/ios-development-and-detail-of-photo-framework.html
  http://www.jianshu.com/p/535bfe3c328f
  http://www.jianshu.com/p/cc85282fac5e
+ http://www.cnblogs.com/Jenaral/p/5580497.html
  在这里对原文作者表示感谢!
  */
 
@@ -62,7 +66,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
         cell.textLabel.text = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
-        cell.imageView.image = self.posterImageArray[indexPath.row];
+//        cell.imageView.image = self.posterImageArray[indexPath.row];
     }
     return cell;
 }
@@ -81,6 +85,7 @@
     self.view.backgroundColor = [UIColor redColor];
     self.assetsLibrary = [[ALAssetsLibrary alloc] init];
     self.assetsArray = [[NSMutableArray alloc] init];
+    self.nameArray = [[NSMutableArray alloc] init];
     self.imagesAssetArray = [[NSMutableArray alloc] init];
     self.posterImageArray = [[NSMutableArray alloc] init];
     self.showTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, self.view.frame.size.width, self.view.frame.size.height - 44)];
@@ -124,12 +129,11 @@
         [self.assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
             
             if (group) {
-                
                 [group setAssetsFilter:[ALAssetsFilter allPhotos]];
                 if (group.numberOfAssets > 0) {
                     // 把相册储存到数组中，方便后面展示相册时使用
                     [self.assetsArray addObject:group];
-                    
+                    [self.nameArray addObject:[group valueForProperty:ALAssetsGroupPropertyName]];
                     //获取相册封面图
                     UIImage *posterImage =  [UIImage imageWithCGImage:[group posterImage]];
                     [self.posterImageArray addObject:posterImage];
@@ -151,8 +155,11 @@
             NSLog(@"Asset group not found!\n");
             
         }];
-        
-        [self.showTableView reloadData];
+      
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.showTableView reloadData];
+        });
+       
     }
 }
 
@@ -203,7 +210,100 @@
 //系统版本号大于等于8.0
 - (void) iOSAfter_iOS8 {
     
+    /*
+     
+     PHAssetCollectionTypeAlbum      自建相册
+     PHAssetCollectionTypeSmartAlbum 智能相册
+     PHAssetCollectionTypeMoment     时刻相册
+     
+     智能相册子类型
+     PHAssetCollectionSubtypeSmartAlbumGeneric    通用的
+     PHAssetCollectionSubtypeSmartAlbumPanoramas  全景
+     PHAssetCollectionSubtypeSmartAlbumVideos     视屏
+     PHAssetCollectionSubtypeSmartAlbumFavorites  收藏
+     PHAssetCollectionSubtypeSmartAlbumTimelapses 延时视屏,也会在PHAssetCollectionSubtypeSmartAlbumVideos在出现
+     PHAssetCollectionSubtypeSmartAlbumAllHidden  隐藏的
+     PHAssetCollectionSubtypeSmartAlbumRecentlyAdded 最近添加
+     PHAssetCollectionSubtypeSmartAlbumBursts    连拍
+     PHAssetCollectionSubtypeSmartAlbumSlomoVideos Slomo是slow motion的缩写,高速摄影慢动作解析
+     PHAssetCollectionSubtypeSmartAlbumUserLibrary 用户所有的资源
+     PHAssetCollectionSubtypeSmartAlbumSelfPortraits 所有前置摄像头拍的照片和视屏
+     PHAssetCollectionSubtypeSmartAlbumScreenshots 所有的截屏图
+     
+     */
+    
+    //权限
+    PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+    if (status == PHAuthorizationStatusDenied || status == PHAuthorizationStatusRestricted) {
+        [self noticeAlerPhotos];
+    }else{
+        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+            if (status == PHAuthorizationStatusAuthorized) {
+                
+                PHFetchOptions *option = [[PHFetchOptions alloc] init];
+                //排序方式
+                option.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"modificationDate" ascending:NO]];
+                // 列出所有相册智能相册
+                PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
+                
+                for (NSInteger i = 0; i < smartAlbums.count; i++) {
+                    // 获取一个相册（PHAssetCollection）
+                    PHCollection *collection = smartAlbums[i];
+                    if ([collection isKindOfClass:[PHAssetCollection class]]) {
+                        PHAssetCollection *assetCollection = (PHAssetCollection *)collection;
+                        // 从每一个智能相册中获取到的 PHFetchResult 中包含的才是真正的资源（PHAsset）
+                        PHFetchResult *fetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:nil];
+                        
+                        if (fetchResult.count > 0) {
+                            
+                            [self.assetsArray addObject:fetchResult];
+                            
+                            [self.nameArray addObject:assetCollection.localizedTitle];
+                            
+                            NSLog(@"%@-----------%@",self.assetsArray,self.nameArray);
+                        }
+                    }else {
+                        
+                        NSAssert(NO, @"Fetch collection not PHCollection: %@", collection);
+                    }
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.showTableView reloadData];
+                    });
+                }
+            }
+        }];
+        
+    }
+
+// 获取所有资源的集合，并按资源的创建时间排序
+//    PHFetchOptions *options = [[PHFetchOptions alloc] init];
+//    options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
+//    PHFetchResult *assetsFetchResults = [PHAsset fetchAssetsWithOptions:options];
+//    
+//    // 这时 assetsFetchResults 中包含的，应该就是各个资源（PHAsset）
+//    for (NSInteger i = 0; i < assetsFetchResults.count; i++) {
+//        // 获取一个资源（PHAsset）
+//        PHAsset *asset = assetsFetchResults[i];
+//    }
+//    
+//    NSLog(@"%@",assetsFetchResults);
+    
 }
+
+
+- (void)noticeAlerPhotos{
+    NSDictionary *mainInfoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSString *appName = [mainInfoDictionary objectForKey:@"CFBundleDisplayName"];
+    NSString *alerString = [NSString stringWithFormat:@"请在设备的\"设置-隐私-照片\"选项中，允许%@访问你的手机相册", appName];
+    // 展示提示语
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        NSLog(@"%@",alerString);
+    
+    });
+}
+
 
 - (void) iOSSelectAfter_iOS8:(NSInteger)tag {
     
