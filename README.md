@@ -1,6 +1,8 @@
 # CCPCustomCamera
 
-工作之余，研究了一下相机的自定义，在这里整理成篇仅供参考学习，希望可以给大家带来些许帮助，也期待大家的批评指正。
+工作之余，研究了一下相机与相册的自定义，在这里整理成篇仅供参考学习，希望可以给大家带来些许帮助，也期待大家的批评指正。
+ 
+###相机的自定义
  
 GIF 示例:
  
@@ -48,36 +50,6 @@ UIImagePickerController无法满足项目的需求，例如我们需要自定义
  */
 @property (nonatomic,strong) AVCaptureConnection *connection;
 
-#以下属性只是在本DEMO中有用到，大家可以按照自己项目的需求进行添加。
-/**
- *  记录屏幕的旋转方向
- */
-@property (nonatomic,assign) UIDeviceOrientation deviceOrientation;
-
-/**
- *  给自定义相机添加（UIPinchGestureRecognizer）手势 ->记录开始的缩放比例
- */
-@property(nonatomic,assign)CGFloat beginGestureScale;
-
-/**
- *  记录最后的缩放比例
- */
-@property(nonatomic,assign)CGFloat effectiveScale;
-
-/**
- *  自定义闪光灯功能 ->闪光灯按钮
- */
-@property(nonatomic,weak)UIButton *lightButton;
-
-/**
- *  闪光灯状态
- */
-@property (nonatomic,assign) NSInteger lightCameraState;
-
-/**
- *  遮照View,主要用来自定义相机界面的显示效果
- */
-@property (nonatomic,weak) CCPCameraView *caramView;
 ```
 ####二、相机界面的布局
 
@@ -131,9 +103,65 @@ home键盘朝下/home键朝右/home键朝上/home键朝左，还有两种就是�
 
 5.闪光灯功能
 
-####四、下一步将要完善的功能
+--------------------------------------------------------------------------------
 
-1.图片浏览器功能；
+###相册的自定义
+
+GIF 示例:
+
+在 iOS 设备中，照片是相当重要的一部分。在 iOS8.0之前，开发者只能使用 AssetsLibrary 框架来访问设备的照片库。而在 iOS8 之后，苹果提供了一个名为   
+PhotoKit 的框架，一个可以让应用更好地与设备照片库对接的框架.由于市面上有一部分应用还支持iOS7,同时为了更加全面的学习,在这里将整理AssetsLibrary 框架与 PhotoKit 框架的相关知识,供大家参考学习.
+
+
+
+首先导入 AssetsLibrary.framework 
+
+```
+#import <AssetsLibrary/AssetsLibrary.h>
+```
+AssetsLibrary
+
+####一、AssetsLibrary 基本介绍
+
+AssetsLibrary: 代表整个设备中的资源库（照片库），通过 AssetsLibrary 可以获取和包括设备中的照片和视频
+
+ALAssetsGroup: 映射照片库中的一个相册，通过 ALAssetsGroup 可以获取某个相册的信息，相册下的资源，同时也可以对某个相册添加资源。
+
+ALAsset: 映射照片库中的一个照片或视频，通过 ALAsset 可以获取某个照片或视频的详细信息，或者保存照片和视频。
+
+ALAssetRepresentation: ALAssetRepresentation 是对 ALAsset 的封装（但不是其子类），可以更方便地获取 ALAsset 中的资源信息，每个 ALAsset 都有至少有一个 ALAssetRepresentation 对象，可以通过 defaultRepresentation 获取。而例如使用系统相机应用拍摄的 RAW + JPEG 照片，则会有两个 ALAssetRepresentation，一个封装了照片的 RAW 信息，另一个则封装了照片的 JPEG 信息。
+
+####二、PhotoKit 基本介绍
+
+####三、主要功能
+
+1.获取相册图片资源;
+
+2.自定义相册功能;
+
+3.图片浏览器功能;
+
+为了不重复造轮子,demo中使用了 XLPhotoBrowser 框架
+
+XLPhotoBrowser下载地址:[https://github.com/Shannoon/XLPhotoBrowser](https://github.com/Shannoon/XLPhotoBrowser)
+
+在这里对框架作者表示感谢!
+
+3.自定义相册图片展示
+
+####四、参考:
+
+a.[http://kayosite.com/ios-development-and-detail-of-photo-framework.html](http://kayosite.com/ios-development-and-detail-of-photo-framework.html)
+
+b.[http://www.jianshu.com/p/535bfe3c328f](http://www.jianshu.com/p/535bfe3c328f)
+
+c.[http://www.jianshu.com/p/cc85282fac5e]( http://www.jianshu.com/p/cc85282fac5e)
+
+对blog作者表示感谢
+
+####五、下一步将要完善的功能
+
+1.PhotoKit 框架的介绍与使用;
 
 2.图片的美化以及滤镜功能；
 
