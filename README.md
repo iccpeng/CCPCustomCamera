@@ -157,7 +157,7 @@ b.[http://www.jianshu.com/p/535bfe3c328f](http://www.jianshu.com/p/535bfe3c328f)
 
 c.[http://www.jianshu.com/p/cc85282fac5e]( http://www.jianshu.com/p/cc85282fac5e)
 
-在这里对blog作者表示感谢
+在这里对blog作者表示感谢!
 
 ####五、下一步将要完善的功能
 
