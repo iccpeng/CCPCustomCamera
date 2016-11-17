@@ -133,6 +133,8 @@ ALAssetRepresentation: ALAssetRepresentation 是对 ALAsset 的封装（但不�
 
 ####二、PhotoKit 基本介绍
 
+暂未完成
+
 ####三、主要功能
 
 1.获取相册图片资源;
