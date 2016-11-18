@@ -22,16 +22,11 @@
 
 @implementation ViewController
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     self.iconImageView.layer.cornerRadius = 12;
-    
     self.iconImageView.layer.masksToBounds = YES;
-    
     self.iconImageView.alpha = 0.9f;
-
     //设置字体样式
     self.englishNameLabel.font = [UIFont fontWithName:@"Zapfino" size:16];
     
@@ -39,6 +34,7 @@
     self.appNameLabel.font = [UIFont systemFontOfSize:22 weight:UIFontWeightThin];
 }
 
+//相机
 - (IBAction)takeApictures:(UIButton *)sender {
     
     CCPTakePicturesController *picturesVC = [[CCPTakePicturesController alloc] init];
@@ -53,10 +49,10 @@
     [self presentViewController:picturesVC animated:YES completion:nil];
 }
 
+//相册
 - (IBAction)clickPhotoAlbumBtn:(UIButton *)sender {
     
     CCPPhotoAlbumViewController *photoAlbumVC = [[CCPPhotoAlbumViewController alloc] init];
-//    CCPShowPhotoVC *photoVC = [[CCPShowPhotoVC alloc] init];
     [self presentViewController:photoAlbumVC animated:YES completion:nil];
     
 }
