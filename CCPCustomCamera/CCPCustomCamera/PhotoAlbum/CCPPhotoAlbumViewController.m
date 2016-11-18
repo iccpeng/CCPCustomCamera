@@ -71,14 +71,13 @@ typedef void(^imageArrayBlock)(NSArray *imagesAssetArray);
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
-          cell.textLabel.text = self.nameArray[indexPath.row];
-       
-        if (self.posterImageArray.count > 0 && self.nameArray.count > 0) {
-            
-            cell.imageView.image = self.posterImageArray[indexPath.row];
-        }
+        
+        cell.textLabel.text = self.nameArray[indexPath.row];
+        
+        cell.imageView.image =self.posterImageArray[indexPath.row];
         
     }
+    
     return cell;
 }
 
@@ -283,18 +282,15 @@ typedef void(^imageArrayBlock)(NSArray *imagesAssetArray);
                             [self.assetsArray addObject:fetchResult];
                             
                             [self.nameArray addObject:assetCollection.localizedTitle];
-                            
-//                            NSLog(@"%@-----------%@",self.assetsArray,self.nameArray);
+                            //获取封面图片,就是第一张图片
                             PHAsset *asset = (PHAsset *)fetchResult.firstObject;
-                            [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeAspectFill options:nil resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info)
+                            PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
+                            //默认的是异步加载,这里选择了同步 因为只获取一张照片，不会对界面产生很大的影响
+                            options.synchronous = YES;
+                            [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeAspectFill options:options resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info)
                              {
-                                 
                                  [self.posterImageArray addObject:result];
-                                 [self.showTableView reloadData];
-                                 NSLog(@"()()()_____()()()%@",self.posterImageArray);
-                                 
                              }];
-
                         }
                     }else {
                         
