@@ -12,11 +12,15 @@
 #import "CCPShowPhotoViewController.h"
 #import "CCPShowPhotoVC.h"
 
+typedef void(^imageArrayBlock)(NSArray *imagesAssetArray);
+
 @interface CCPPhotoAlbumViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,strong) ALAssetsLibrary *assetsLibrary;
 
 @property (nonatomic,strong) NSMutableArray *assetsArray;
+
+@property (nonatomic,strong) NSMutableArray *assetArray2;
 
 @property (nonatomic,strong) NSMutableArray *nameArray;
 
@@ -25,6 +29,8 @@
 @property (nonatomic,strong) UITableView *showTableView;
 
 @property (nonatomic,strong) NSMutableArray *posterImageArray;
+
+@property (nonatomic,copy) imageArrayBlock imageArrayBlock;
 
 @end
 
@@ -65,18 +71,35 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
-        cell.textLabel.text = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
-//        cell.imageView.image = self.posterImageArray[indexPath.row];
+          cell.textLabel.text = self.nameArray[indexPath.row];
+       
+        if (self.posterImageArray.count > 0 && self.nameArray.count > 0) {
+            
+            cell.imageView.image = self.posterImageArray[indexPath.row];
+        }
+        
     }
     return cell;
 }
 
 #pragma mark -tableView Delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    CCPShowPhotoViewController *showPhotoVC = [[CCPShowPhotoViewController alloc] init];
+    
     CCPShowPhotoVC *photoVC = [[CCPShowPhotoVC alloc] init];
-    [self iOSSelectBefore_iOS8:indexPath.row];
-    photoVC.imageArray = self.imagesAssetArray;
+    
+    if ([self iOSIsbefore_iOS8]) {
+        
+        [self iOSSelectBefore_iOS8:indexPath.row];
+        
+        photoVC.imageArray = self.imagesAssetArray;
+        photoVC.isIOS8 = YES;
+        
+    }else {
+        
+        photoVC.fetchResult = (PHFetchResult *)self.assetsArray[indexPath.row];
+        photoVC.isIOS8 = NO;
+    }
+    
     [self presentViewController:photoVC animated:YES completion:nil];
 }
 
@@ -155,11 +178,11 @@
             NSLog(@"Asset group not found!\n");
             
         }];
-      
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.showTableView reloadData];
         });
-       
+        
     }
 }
 
@@ -202,6 +225,7 @@
                 UIImage *contentImage = [UIImage imageWithCGImage:[representation fullScreenImage]];
                 [self.imagesAssetArray addObject:contentImage];
             } else {
+                
             }
         }];
     }
@@ -260,7 +284,17 @@
                             
                             [self.nameArray addObject:assetCollection.localizedTitle];
                             
-                            NSLog(@"%@-----------%@",self.assetsArray,self.nameArray);
+//                            NSLog(@"%@-----------%@",self.assetsArray,self.nameArray);
+                            PHAsset *asset = (PHAsset *)fetchResult.firstObject;
+                            [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeAspectFill options:nil resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info)
+                             {
+                                 
+                                 [self.posterImageArray addObject:result];
+                                 [self.showTableView reloadData];
+                                 NSLog(@"()()()_____()()()%@",self.posterImageArray);
+                                 
+                             }];
+
                         }
                     }else {
                         
@@ -275,22 +309,21 @@
         }];
         
     }
-
-// 获取所有资源的集合，并按资源的创建时间排序
-//    PHFetchOptions *options = [[PHFetchOptions alloc] init];
-//    options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
-//    PHFetchResult *assetsFetchResults = [PHAsset fetchAssetsWithOptions:options];
-//    
-//    // 这时 assetsFetchResults 中包含的，应该就是各个资源（PHAsset）
-//    for (NSInteger i = 0; i < assetsFetchResults.count; i++) {
-//        // 获取一个资源（PHAsset）
-//        PHAsset *asset = assetsFetchResults[i];
-//    }
-//    
-//    NSLog(@"%@",assetsFetchResults);
+    
+    // 获取所有资源的集合，并按资源的创建时间排序
+    //    PHFetchOptions *options = [[PHFetchOptions alloc] init];
+    //    options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
+    //    PHFetchResult *assetsFetchResults = [PHAsset fetchAssetsWithOptions:options];
+    //
+    //    // 这时 assetsFetchResults 中包含的，应该就是各个资源（PHAsset）
+    //    for (NSInteger i = 0; i < assetsFetchResults.count; i++) {
+    //        // 获取一个资源（PHAsset）
+    //        PHAsset *asset = assetsFetchResults[i];
+    //    }
+    //
+    //    NSLog(@"%@",assetsFetchResults);
     
 }
-
 
 - (void)noticeAlerPhotos{
     NSDictionary *mainInfoDictionary = [[NSBundle mainBundle] infoDictionary];
@@ -300,13 +333,8 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         
         NSLog(@"%@",alerString);
-    
+        
     });
-}
-
-
-- (void) iOSSelectAfter_iOS8:(NSInteger)tag {
-    
 }
 
 

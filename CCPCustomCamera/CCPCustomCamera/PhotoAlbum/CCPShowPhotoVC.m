@@ -10,6 +10,7 @@
 #import "CCPShowPhotoCollectionViewCell.h"
 #import "UIView+XLExtension.h"
 #import "XLPhotoBrowser.h"
+#import "CCPPhotoAlbumViewController.h"
 //间距
 #define CCP_Margin 3.0f
 //每排显示的个数
@@ -76,25 +77,44 @@
     return _selectedImageArray;
 }
 
-
-- (void)setImageArray:(NSArray *)imageArray {
+- (void)setImageArray:(NSMutableArray *)imageArray {
     
     _imageArray = imageArray;
     
+    [self.showCollectionView reloadData];
+    
 }
+- (void)setFetchResult:(PHFetchResult *)fetchResult {
+    
+    _fetchResult = fetchResult;
+    
+    __weak typeof(self) weakSelf = self;
+    
+    for (PHAsset * asset in fetchResult){
+        
+        [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeAspectFill options:nil resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info)
+         {
+            
+             [weakSelf.imageArray addObject:result];
+             
+             [weakSelf.showCollectionView reloadData];
+             
+         }];
+    }
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor redColor];
     [self makeUI];
-}
 
+}
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     
     return self.imageArray.count;
 }
-
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -177,6 +197,10 @@
 - (void) makeUI {
     
     [self.view addSubview:self.showCollectionView];
+    if (!self.isIOS8) {
+     NSMutableArray *imageArray = [NSMutableArray array];
+     self.imageArray = imageArray;
+    }
     self.showCollectionView.delegate = self;
     self.showCollectionView.dataSource = self;
     UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 44)];

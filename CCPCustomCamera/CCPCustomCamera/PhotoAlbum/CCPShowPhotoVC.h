@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import <Photos/Photos.h>
 @interface CCPShowPhotoVC : UIViewController
-@property (nonatomic,strong) NSArray *imageArray;
+
+@property (nonatomic,strong) NSMutableArray *imageArray;
+@property (nonatomic,strong) PHFetchResult *fetchResult;
+@property (nonatomic,assign) BOOL isIOS8;
 @end
