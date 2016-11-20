@@ -55,7 +55,7 @@ UIImagePickerController无法满足项目的需求，例如我们需要自定义
 
 图片示意图
 
-![ccpCa.png](http://upload-images.jianshu.io/upload_images/1764698-e3aa48775fdaae97.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![ccpCamera.png](http://upload-images.jianshu.io/upload_images/1764698-e3aa48775fdaae97.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ####三、主要功能介绍
 
@@ -108,6 +108,7 @@ home键盘朝下/home键朝右/home键朝上/home键朝左，还有两种就是�
 ###相册的自定义
 
 GIF 示例:
+![ccpCamera.png](http://upload-images.jianshu.io/upload_images/1764698-ab45e5fdeb6d2599.gif?imageMogr2/auto-orient/strip)
 
 在 iOS 设备中，照片是相当重要的一部分。在 iOS8.0之前，开发者只能使用 AssetsLibrary 框架来访问设备的照片库。而在 iOS8 之后，苹果提供了一个名为   
 PhotoKit 的框架，一个可以让应用更好地与设备照片库对接的框架.由于市面上有一部分应用还支持iOS7,同时为了更加全面的学习,在这里将整理AssetsLibrary 框架与 PhotoKit 框架的相关知识,供大家参考学习.
@@ -133,7 +134,16 @@ ALAssetRepresentation: ALAssetRepresentation 是对 ALAsset 的封装（但不�
 
 ####二、PhotoKit 基本介绍
 
-暂未完成
+PhotoKit 是一套比 AssetsLibrary 更完整也更高效的库，对资源的处理跟 AssetsLibrary 也有很大的不同。
+
+PhotoKit 基本构成的介绍：
+
+PHAsset: 代表照片库中的一个资源，跟 ALAsset 类似，通过 PHAsset 可以获取和保存资源
+PHFetchOptions: 获取资源时的参数，可以传 nil，即使用系统默认值
+PHAssetCollection: PHCollection 的子类，表示一个相册或者一个时刻，或者是一个「智能相册（系统提供的特定的一系列相册，例如：最近删除，视频列表，收藏等等，如下图所示）
+PHFetchResult: 表示一系列的资源结果集合，也可以是相册的集合，从?PHCollection 的类方法中获得
+PHImageManager: 用于处理资源的加载，加载图片的过程带有缓存处理，可以通过传入一个 PHImageRequestOptions 控制资源的输出尺寸等规格
+PHImageRequestOptions: 如上面所说，控制加载图片时的一系列参数
 
 ####三、主要功能
 
@@ -143,7 +153,7 @@ ALAssetRepresentation: ALAssetRepresentation 是对 ALAsset 的封装（但不�
 
 3.图片浏览器功能;
 
-为了不重复造轮子,demo中使用了 XLPhotoBrowser 框架
+本着不重复造轮子,demo中图片浏览器使用了 XLPhotoBrowser 
 
 XLPhotoBrowser下载地址:[https://github.com/Shannoon/XLPhotoBrowser](https://github.com/Shannoon/XLPhotoBrowser)
 
@@ -163,8 +173,6 @@ c.[http://www.jianshu.com/p/cc85282fac5e]( http://www.jianshu.com/p/cc85282fac5e
 
 ####五、下一步将要完善的功能
 
-1.PhotoKit 框架的介绍与使用;
-
-2.图片的美化以及滤镜功能；
+图片的美化以及滤镜功能；
 
 感谢您的阅读，期待您的 Star，如果在使用中您有任何问题，可以在 github issue,我会尽自己能力给您答复 。
