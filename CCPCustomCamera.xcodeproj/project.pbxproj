@@ -31,7 +31,6 @@
 		7EA6F0241DDC505C006048C9 /* CCPPhotoAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EA6F01D1DDC505C006048C9 /* CCPPhotoAlbumViewController.m */; };
 		7EA6F0251DDC505C006048C9 /* CCPShowPhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EA6F01F1DDC505C006048C9 /* CCPShowPhotoCollectionViewCell.m */; };
 		7EA6F0261DDC505C006048C9 /* CCPShowPhotoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EA6F0211DDC505C006048C9 /* CCPShowPhotoVC.m */; };
-		7EA6F0271DDC505C006048C9 /* CCPShowPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EA6F0231DDC505C006048C9 /* CCPShowPhotoViewController.m */; };
 		7EA6F02A1DDC5097006048C9 /* UIView+CCPExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EA6F0291DDC5097006048C9 /* UIView+CCPExtension.m */; };
 		7EA6F11E1DDC665C006048C9 /* UIImage+XLExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EA6F0DC1DDC665C006048C9 /* UIImage+XLExtension.m */; };
 		7EA6F11F1DDC665C006048C9 /* UIView+XLExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EA6F0DE1DDC665C006048C9 /* UIView+XLExtension.m */; };
@@ -153,8 +152,6 @@
 		7EA6F01F1DDC505C006048C9 /* CCPShowPhotoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPShowPhotoCollectionViewCell.m; sourceTree = "<group>"; };
 		7EA6F0201DDC505C006048C9 /* CCPShowPhotoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPShowPhotoVC.h; sourceTree = "<group>"; };
 		7EA6F0211DDC505C006048C9 /* CCPShowPhotoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPShowPhotoVC.m; sourceTree = "<group>"; };
-		7EA6F0221DDC505C006048C9 /* CCPShowPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPShowPhotoViewController.h; sourceTree = "<group>"; };
-		7EA6F0231DDC505C006048C9 /* CCPShowPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPShowPhotoViewController.m; sourceTree = "<group>"; };
 		7EA6F0281DDC5097006048C9 /* UIView+CCPExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+CCPExtension.h"; sourceTree = "<group>"; };
 		7EA6F0291DDC5097006048C9 /* UIView+CCPExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+CCPExtension.m"; sourceTree = "<group>"; };
 		7EA6F0DB1DDC665C006048C9 /* UIImage+XLExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+XLExtension.h"; sourceTree = "<group>"; };
@@ -402,8 +399,6 @@
 				7EA6F01F1DDC505C006048C9 /* CCPShowPhotoCollectionViewCell.m */,
 				7EA6F0201DDC505C006048C9 /* CCPShowPhotoVC.h */,
 				7EA6F0211DDC505C006048C9 /* CCPShowPhotoVC.m */,
-				7EA6F0221DDC505C006048C9 /* CCPShowPhotoViewController.h */,
-				7EA6F0231DDC505C006048C9 /* CCPShowPhotoViewController.m */,
 			);
 			path = PhotoAlbum;
 			sourceTree = "<group>";
@@ -721,7 +716,6 @@
 				7ED9441B1DB8C59F0083D7FA /* ViewController.m in Sources */,
 				7EA6F1351DDC665C006048C9 /* UIImage+MultiFormat.m in Sources */,
 				7E6414591DC090F400280A2C /* TOCropView.m in Sources */,
-				7EA6F0271DDC505C006048C9 /* CCPShowPhotoViewController.m in Sources */,
 				7EA6F0191DDC5025006048C9 /* CCPCameraView.m in Sources */,
 				7E6414581DC090F400280A2C /* TOCropToolbar.m in Sources */,
 				7EA6F12B1DDC665C006048C9 /* NSData+ImageContentType.m in Sources */,

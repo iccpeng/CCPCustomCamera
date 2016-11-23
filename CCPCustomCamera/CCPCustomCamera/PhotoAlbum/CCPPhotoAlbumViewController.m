@@ -9,7 +9,6 @@
 #import "CCPPhotoAlbumViewController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <Photos/Photos.h>
-#import "CCPShowPhotoViewController.h"
 #import "CCPShowPhotoVC.h"
 
 typedef void(^imageArrayBlock)(NSArray *imagesAssetArray);
