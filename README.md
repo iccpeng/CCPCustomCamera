@@ -1,4 +1,4 @@
-# CCPCustomCamera
+<center> # CCPCustomCamera</center >
 
 工作之余，研究了一下相机与相册的自定义，在这里整理成篇仅供参考学习，希望可以给大家带来些许帮助，也期待大家的批评指正。
 
