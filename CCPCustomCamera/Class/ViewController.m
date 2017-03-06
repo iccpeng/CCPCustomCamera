@@ -11,6 +11,7 @@
 #import "CCPTakePicturesController.h"
 #import "CCPPhotoAlbumViewController.h"
 #import "CCPShowPhotoVC.h"
+#import "CCPBecomeBeautifulController.h"
 
 @interface ViewController ()
 
@@ -55,6 +56,12 @@
     CCPPhotoAlbumViewController *photoAlbumVC = [[CCPPhotoAlbumViewController alloc] init];
     [self presentViewController:photoAlbumVC animated:YES completion:nil];
     
+}
+
+- (IBAction)becomeBeautiful:(UIButton *)sender {
+    
+    CCPBecomeBeautifulController *beautifulVC = [[CCPBecomeBeautifulController alloc] init];
+    [self presentViewController:beautifulVC animated:YES completion:nil];
 }
 
 

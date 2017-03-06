@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CCPBecomeBeautifulController">
+            <connections>
+                <outlet property="becomeImageView" destination="029-ld-jf3" id="Rzg-Zc-o14"/>
+                <outlet property="becomeScrollview" destination="kWa-MD-nPi" id="aOh-zI-DFy"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tongliya" translatesAutoresizingMaskIntoConstraints="NO" id="029-ld-jf3">
+                    <rect key="frame" x="60" y="64" width="200" height="267"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="029-ld-jf3" secondAttribute="height" multiplier="200:267" id="TJF-kh-7lC"/>
+                    </constraints>
+                </imageView>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kWa-MD-nPi">
+                    <rect key="frame" x="40" y="368" width="240" height="100"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="100" id="YDP-Q3-yRj"/>
+                    </constraints>
+                </scrollView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ddC-Xg-fba">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8dI-hT-fe8">
+                            <rect key="frame" x="15" y="0.0" width="60" height="55"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="60" id="XZw-sE-69X"/>
+                            </constraints>
+                            <state key="normal" title="返回">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="back:" destination="-1" eventType="touchUpInside" id="xBX-Vk-lth"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="1" green="0.45929904513888886" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstItem="8dI-hT-fe8" firstAttribute="top" secondItem="ddC-Xg-fba" secondAttribute="top" id="FzJ-5f-WCP"/>
+                        <constraint firstAttribute="bottom" secondItem="8dI-hT-fe8" secondAttribute="bottom" id="K9k-Io-mAA"/>
+                        <constraint firstItem="8dI-hT-fe8" firstAttribute="leading" secondItem="ddC-Xg-fba" secondAttribute="leading" constant="15" id="SDm-uQ-ITJ"/>
+                        <constraint firstAttribute="height" constant="55" id="k2Z-sv-a5x"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="ddC-Xg-fba" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="0Z8-h9-hmm"/>
+                <constraint firstItem="kWa-MD-nPi" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="40" id="5YI-qn-TZi"/>
+                <constraint firstItem="ddC-Xg-fba" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="7vz-Lz-KhD"/>
+                <constraint firstItem="kWa-MD-nPi" firstAttribute="top" secondItem="029-ld-jf3" secondAttribute="bottom" constant="37" id="Ga3-PY-W3g"/>
+                <constraint firstItem="029-ld-jf3" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="64" id="ZfA-jw-HIN"/>
+                <constraint firstAttribute="trailing" secondItem="ddC-Xg-fba" secondAttribute="trailing" id="bvb-LL-13d"/>
+                <constraint firstAttribute="trailing" secondItem="kWa-MD-nPi" secondAttribute="trailing" constant="40" id="nZe-zy-NHc"/>
+                <constraint firstItem="029-ld-jf3" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="qts-iR-27d"/>
+                <constraint firstItem="029-ld-jf3" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="25:71" id="xC0-BB-5oc"/>
+            </constraints>
+        </view>
+    </objects>
+    <resources>
+        <image name="tongliya" width="200" height="266"/>
+    </resources>
+</document>
