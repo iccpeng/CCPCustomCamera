@@ -8,14 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void(^clickSelectedBtnBlock)(NSInteger btnTag);
-typedef void(^clickUnselectedBtnBlock)(NSInteger btnTag);
+typedef void(^clickSelectedBtnBlock)(UIButton* btn);
+typedef void(^clickUnselectedBtnBlock)(UIButton* btn);
 
 @interface CCPShowPhotoCollectionViewCell : UICollectionViewCell
-
 @property (nonatomic,strong) UIImage *showImage;
-@property (nonatomic,assign) NSInteger btnTag;
-
+@property (nonatomic,weak) UIButton *selectBtn;
 @property (nonatomic,copy) clickSelectedBtnBlock selectedBtnBlock;
 @property (nonatomic,copy) clickUnselectedBtnBlock unselectedBtnBlock;
 

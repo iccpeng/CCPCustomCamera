@@ -11,7 +11,6 @@
 @interface CCPShowPhotoCollectionViewCell ()
 
 @property (nonatomic,weak) UIImageView *showImageView;
-@property (nonatomic,weak) UIButton *selectBtn;
 
 @end
 
@@ -29,22 +28,17 @@
 }
 
 - (void)setShowImage:(UIImage *)showImage {
-    
     _showImage = showImage;
     
     self.showImageView.image = showImage;
-    
-}
-
-- (void)setBtnTag:(NSInteger)btnTag {
-    _btnTag = btnTag;
-    self.selectBtn.tag = btnTag + 100;
 }
 
 
 - (void)makeUI{
     self.contentView.backgroundColor = [UIColor redColor];
     UIImageView *showImageView = [[UIImageView alloc] init];
+    showImageView.contentMode = UIViewContentModeScaleAspectFill;
+    showImageView.clipsToBounds = YES;
     [self.contentView addSubview:showImageView];
     self.showImageView = showImageView;
     UIButton *selectBtn = [[UIButton alloc] init];
@@ -58,24 +52,16 @@
    
     sender.selected = !sender.selected;
     if (sender.selected) {
-        
         [sender setImage:[UIImage imageNamed:@"xuanzhong"] forState:UIControlStateNormal];
-        
         if (self.selectedBtnBlock) {
-            
-            self.selectedBtnBlock(sender.tag - 100);
+            self.selectedBtnBlock(sender);
         }
-        
     } else {
          [sender setImage:[UIImage imageNamed:@"weiXuanZhong"] forState:UIControlStateNormal];
-        
         if (self.unselectedBtnBlock) {
-            
-            self.unselectedBtnBlock(sender.tag - 100);
+            self.unselectedBtnBlock(sender);
         }
-        
     }
-    
 }
 
 - (void)layoutSubviews {

@@ -16,17 +16,17 @@ typedef void(^imageArrayBlock)(NSArray *imagesAssetArray);
 @interface CCPPhotoAlbumViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,strong) ALAssetsLibrary *assetsLibrary;
-
+//相册数组
 @property (nonatomic,strong) NSMutableArray *assetsArray;
 
-@property (nonatomic,strong) NSMutableArray *assetArray2;
-
+//@property (nonatomic,strong) NSMutableArray *assetArray2;
+//相册名数组
 @property (nonatomic,strong) NSMutableArray *nameArray;
-
+//图片数组
 @property (nonatomic,strong) NSMutableArray *imagesAssetArray;
 
 @property (nonatomic,strong) UITableView *showTableView;
-
+//封面图片数组
 @property (nonatomic,strong) NSMutableArray *posterImageArray;
 
 @property (nonatomic,copy) imageArrayBlock imageArrayBlock;
@@ -109,13 +109,13 @@ typedef void(^imageArrayBlock)(NSArray *imagesAssetArray);
     self.nameArray = [[NSMutableArray alloc] init];
     self.imagesAssetArray = [[NSMutableArray alloc] init];
     self.posterImageArray = [[NSMutableArray alloc] init];
-    self.showTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, self.view.frame.size.width, self.view.frame.size.height - 44)];
+    self.showTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 55, self.view.frame.size.width, self.view.frame.size.height - 55)];
     self.showTableView.delegate = self;
     self.showTableView.dataSource = self;
     [self.view addSubview:self.showTableView];
-    UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 44)];
-    headView.backgroundColor = [UIColor blackColor];
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(15, 0, 50, 44)];
+    UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 55)];
+    headView.backgroundColor = [UIColor orangeColor];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(15, 0, 60, 55)];
     [button setTitle:@"关闭" forState:UIControlStateNormal];
     [button setTintColor:[UIColor whiteColor]];
     [button addTarget:self action:@selector(clickTheBtn) forControlEvents:UIControlEventTouchUpInside];
@@ -124,7 +124,7 @@ typedef void(^imageArrayBlock)(NSArray *imagesAssetArray);
 }
 #pragma mark -系统版本判断
 - (BOOL) iOSIsbefore_iOS8 {
-    return [[[UIDevice currentDevice] systemVersion] floatValue] <= 9.0 ?1:0;
+    return [[[UIDevice currentDevice] systemVersion] floatValue] <= 8.0 ?1:0;
 }
 
 //系统版本小于8.0
@@ -267,6 +267,16 @@ typedef void(^imageArrayBlock)(NSArray *imagesAssetArray);
                 option.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"modificationDate" ascending:NO]];
                 // 列出所有相册智能相册
                 PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
+                /* 列出所有用户创建的相册
+                 PHFetchResult *topLevelUserCollections = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:nil];
+                 */
+                
+                /*
+                 获取所有资源的集合，并按资源的创建时间排序
+                 PHFetchOptions *options = [[PHFetchOptions alloc] init];
+                 options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
+                 PHFetchResult *assetsFetchResults = [PHAsset fetchAssetsWithOptions:options];
+                 */
                 
                 for (NSInteger i = 0; i < smartAlbums.count; i++) {
                     // 获取一个相册（PHAssetCollection）
@@ -281,12 +291,16 @@ typedef void(^imageArrayBlock)(NSArray *imagesAssetArray);
                             [self.assetsArray addObject:fetchResult];
                             
                             [self.nameArray addObject:assetCollection.localizedTitle];
-                            //获取封面图片,就是第一张图片
+                            
+                            /*
+                            获取封面图片,就是第一张图片
+                            默认的是异步加载,这里选择了同步 因为只获取一张照片，不会对界面产生很大的影响
+                            如果targetSize:PHImageManagerMaximumSize 则默认的返回原图,耗费很大的性能
+                             */
                             PHAsset *asset = (PHAsset *)fetchResult.firstObject;
                             PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
-                            //默认的是异步加载,这里选择了同步 因为只获取一张照片，不会对界面产生很大的影响
                             options.synchronous = YES;
-                            [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeAspectFill options:options resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info)
+                            [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:CGSizeMake(100, 100) contentMode:PHImageContentModeAspectFill options:options resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info)
                              {
                                  [self.posterImageArray addObject:result];
                              }];
@@ -295,29 +309,14 @@ typedef void(^imageArrayBlock)(NSArray *imagesAssetArray);
                         
                         NSAssert(NO, @"Fetch collection not PHCollection: %@", collection);
                     }
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.showTableView reloadData];
-                    });
                 }
+                //在主线程更新UI界面
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.showTableView reloadData];
+                });
             }
         }];
-        
     }
-    
-    // 获取所有资源的集合，并按资源的创建时间排序
-    //    PHFetchOptions *options = [[PHFetchOptions alloc] init];
-    //    options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
-    //    PHFetchResult *assetsFetchResults = [PHAsset fetchAssetsWithOptions:options];
-    //
-    //    // 这时 assetsFetchResults 中包含的，应该就是各个资源（PHAsset）
-    //    for (NSInteger i = 0; i < assetsFetchResults.count; i++) {
-    //        // 获取一个资源（PHAsset）
-    //        PHAsset *asset = assetsFetchResults[i];
-    //    }
-    //
-    //    NSLog(@"%@",assetsFetchResults);
-    
 }
 
 - (void)noticeAlerPhotos{
