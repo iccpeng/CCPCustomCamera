@@ -13,6 +13,7 @@
 		217172DC1D92656A00B89D7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 217172DA1D92656A00B89D7F /* LaunchScreen.storyboard */; };
 		217172E71D92656A00B89D7F /* CCPCustomCameraTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 217172E61D92656A00B89D7F /* CCPCustomCameraTests.m */; };
 		217172F21D92656A00B89D7F /* CCPCustomCameraUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 217172F11D92656A00B89D7F /* CCPCustomCameraUITests.m */; };
+		7E6402831E6E4A280054CCB5 /* libGPUImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E6402821E6E4A280054CCB5 /* libGPUImage.a */; };
 		7E64144E1DC090F400280A2C /* MotionOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E6414221DC090F400280A2C /* MotionOrientation.m */; };
 		7E64144F1DC090F400280A2C /* TOCropViewControllerLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7E6414241DC090F400280A2C /* TOCropViewControllerLocalizable.strings */; };
 		7E6414501DC090F400280A2C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7E64142D1DC090F400280A2C /* Info.plist */; };
@@ -63,7 +64,6 @@
 		7EA6F13A1DDC665C006048C9 /* XLPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EA6F1181DDC665C006048C9 /* XLPhotoBrowser.m */; };
 		7EA6F13B1DDC665C006048C9 /* XLProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EA6F11B1DDC665C006048C9 /* XLProgressView.m */; };
 		7EA6F13C1DDC665C006048C9 /* XLZoomingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EA6F11D1DDC665C006048C9 /* XLZoomingScrollView.m */; };
-		7EC44D8F1E6D43170037BD69 /* libGPUImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EC44CDF1E6D43170037BD69 /* libGPUImage.a */; };
 		7EC44D911E6D44070037BD69 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EC44D901E6D44070037BD69 /* QuartzCore.framework */; };
 		7EC44D931E6D44140037BD69 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EC44D921E6D44140037BD69 /* AVFoundation.framework */; };
 		7EC44D951E6D441D0037BD69 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EC44D941E6D441D0037BD69 /* OpenGLES.framework */; };
@@ -109,6 +109,7 @@
 		217172ED1D92656A00B89D7F /* CCPCustomCameraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CCPCustomCameraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		217172F11D92656A00B89D7F /* CCPCustomCameraUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CCPCustomCameraUITests.m; sourceTree = "<group>"; };
 		217172F31D92656A00B89D7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7E6402821E6E4A280054CCB5 /* libGPUImage.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGPUImage.a; sourceTree = "<group>"; };
 		7E6414211DC090F400280A2C /* MotionOrientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MotionOrientation.h; sourceTree = "<group>"; };
 		7E6414221DC090F400280A2C /* MotionOrientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MotionOrientation.m; sourceTree = "<group>"; };
 		7E6414251DC090F400280A2C /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/TOCropViewControllerLocalizable.strings; sourceTree = "<group>"; };
@@ -225,7 +226,6 @@
 		7EA6F11B1DDC665C006048C9 /* XLProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XLProgressView.m; sourceTree = "<group>"; };
 		7EA6F11C1DDC665C006048C9 /* XLZoomingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XLZoomingScrollView.h; sourceTree = "<group>"; };
 		7EA6F11D1DDC665C006048C9 /* XLZoomingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XLZoomingScrollView.m; sourceTree = "<group>"; };
-		7EC44CDF1E6D43170037BD69 /* libGPUImage.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGPUImage.a; sourceTree = "<group>"; };
 		7EC44CE31E6D43170037BD69 /* GLProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLProgram.h; sourceTree = "<group>"; };
 		7EC44CE41E6D43170037BD69 /* GPUImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPUImage.h; sourceTree = "<group>"; };
 		7EC44CE51E6D43170037BD69 /* GPUImage3x3ConvolutionFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPUImage3x3ConvolutionFilter.h; sourceTree = "<group>"; };
@@ -424,13 +424,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				7ED944091DB88EE50083D7FA /* CoreGraphics.framework in Frameworks */,
+				7E6402831E6E4A280054CCB5 /* libGPUImage.a in Frameworks */,
 				7EC44D991E6D44310037BD69 /* CoreMedia.framework in Frameworks */,
 				7EC44D971E6D44280037BD69 /* CoreVideo.framework in Frameworks */,
 				7EC44D951E6D441D0037BD69 /* OpenGLES.framework in Frameworks */,
 				7EC44D931E6D44140037BD69 /* AVFoundation.framework in Frameworks */,
 				7EC44D911E6D44070037BD69 /* QuartzCore.framework in Frameworks */,
 				7E6926261DDA9CA200F54FEE /* AssetsLibrary.framework in Frameworks */,
-				7EC44D8F1E6D43170037BD69 /* libGPUImage.a in Frameworks */,
 				7ED944071DB88ED70083D7FA /* CoreMotion.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -517,9 +517,9 @@
 		7E64141F1DC090F400280A2C /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				7EC44D9A1E6D44D30037BD69 /* BeautifyFace */,
-				7EC44CDF1E6D43170037BD69 /* libGPUImage.a */,
+				7E6402821E6E4A280054CCB5 /* libGPUImage.a */,
 				7EC44CE01E6D43170037BD69 /* usr */,
+				7EC44D9A1E6D44D30037BD69 /* BeautifyFace */,
 				7EA6F0DA1DDC665C006048C9 /* XLPhotoBrowser */,
 				7E6414201DC090F400280A2C /* MotionOrientation */,
 				7E6414231DC090F400280A2C /* TOCropViewController */,
