@@ -10,7 +10,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <Photos/Photos.h>
 #import "CCPShowPhotoVC.h"
-
+#import "CCPPhotoAlbumTableViewCell.h"
 typedef void(^imageArrayBlock)(NSArray *imagesAssetArray);
 
 @interface CCPPhotoAlbumViewController ()<UITableViewDataSource,UITableViewDelegate>
@@ -67,16 +67,9 @@ typedef void(^imageArrayBlock)(NSArray *imagesAssetArray);
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
-        
-        cell.textLabel.text = self.nameArray[indexPath.row];
-        
-        cell.imageView.image =self.posterImageArray[indexPath.row];
-        
-    }
-    
+     CCPPhotoAlbumTableViewCell *cell = [CCPPhotoAlbumTableViewCell initWithTableview:tableView];
+    cell.coverString = self.nameArray[indexPath.row];
+    cell.coverImage = self.posterImageArray[indexPath.row];
     return cell;
 }
 
@@ -99,6 +92,10 @@ typedef void(^imageArrayBlock)(NSArray *imagesAssetArray);
     }
     
     [self presentViewController:photoVC animated:YES completion:nil];
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 80;
 }
 
 #pragma mark -UI布局

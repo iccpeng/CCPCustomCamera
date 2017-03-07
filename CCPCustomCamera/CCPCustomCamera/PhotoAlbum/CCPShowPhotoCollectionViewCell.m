@@ -18,21 +18,16 @@
 
 #pragma mark - 直接写这个方法
 - (instancetype)initWithFrame:(CGRect)frame{
-    
     if (self = [super initWithFrame:frame]) {
-        
         [self makeUI];
-        
     }
     return self;
 }
 
 - (void)setShowImage:(UIImage *)showImage {
     _showImage = showImage;
-    
     self.showImageView.image = showImage;
 }
-
 
 - (void)makeUI{
     self.contentView.backgroundColor = [UIColor redColor];

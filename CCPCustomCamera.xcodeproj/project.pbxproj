@@ -13,6 +13,7 @@
 		217172DC1D92656A00B89D7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 217172DA1D92656A00B89D7F /* LaunchScreen.storyboard */; };
 		217172E71D92656A00B89D7F /* CCPCustomCameraTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 217172E61D92656A00B89D7F /* CCPCustomCameraTests.m */; };
 		217172F21D92656A00B89D7F /* CCPCustomCameraUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 217172F11D92656A00B89D7F /* CCPCustomCameraUITests.m */; };
+		7E1C92861E6EB007002909EC /* CCPPhotoAlbumTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E1C92851E6EB007002909EC /* CCPPhotoAlbumTableViewCell.m */; };
 		7E6402831E6E4A280054CCB5 /* libGPUImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E6402821E6E4A280054CCB5 /* libGPUImage.a */; };
 		7E64144E1DC090F400280A2C /* MotionOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E6414221DC090F400280A2C /* MotionOrientation.m */; };
 		7E64144F1DC090F400280A2C /* TOCropViewControllerLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7E6414241DC090F400280A2C /* TOCropViewControllerLocalizable.strings */; };
@@ -109,6 +110,8 @@
 		217172ED1D92656A00B89D7F /* CCPCustomCameraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CCPCustomCameraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		217172F11D92656A00B89D7F /* CCPCustomCameraUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CCPCustomCameraUITests.m; sourceTree = "<group>"; };
 		217172F31D92656A00B89D7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7E1C92841E6EB007002909EC /* CCPPhotoAlbumTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPPhotoAlbumTableViewCell.h; sourceTree = "<group>"; };
+		7E1C92851E6EB007002909EC /* CCPPhotoAlbumTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPPhotoAlbumTableViewCell.m; sourceTree = "<group>"; };
 		7E6402821E6E4A280054CCB5 /* libGPUImage.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGPUImage.a; sourceTree = "<group>"; };
 		7E6414211DC090F400280A2C /* MotionOrientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MotionOrientation.h; sourceTree = "<group>"; };
 		7E6414221DC090F400280A2C /* MotionOrientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MotionOrientation.m; sourceTree = "<group>"; };
@@ -596,6 +599,8 @@
 			children = (
 				7EA6F01C1DDC505C006048C9 /* CCPPhotoAlbumViewController.h */,
 				7EA6F01D1DDC505C006048C9 /* CCPPhotoAlbumViewController.m */,
+				7E1C92841E6EB007002909EC /* CCPPhotoAlbumTableViewCell.h */,
+				7E1C92851E6EB007002909EC /* CCPPhotoAlbumTableViewCell.m */,
 				7EA6F01E1DDC505C006048C9 /* CCPShowPhotoCollectionViewCell.h */,
 				7EA6F01F1DDC505C006048C9 /* CCPShowPhotoCollectionViewCell.m */,
 				7EA6F0201DDC505C006048C9 /* CCPShowPhotoVC.h */,
@@ -1139,6 +1144,7 @@
 				7EA6F1351DDC665C006048C9 /* UIImage+MultiFormat.m in Sources */,
 				7E6414591DC090F400280A2C /* TOCropView.m in Sources */,
 				7EA6F0191DDC5025006048C9 /* CCPCameraView.m in Sources */,
+				7E1C92861E6EB007002909EC /* CCPPhotoAlbumTableViewCell.m in Sources */,
 				7EC44D9D1E6D44E30037BD69 /* GPUImageBeautifyFilter.m in Sources */,
 				7E6414581DC090F400280A2C /* TOCropToolbar.m in Sources */,
 				7EA6F12B1DDC665C006048C9 /* NSData+ImageContentType.m in Sources */,
