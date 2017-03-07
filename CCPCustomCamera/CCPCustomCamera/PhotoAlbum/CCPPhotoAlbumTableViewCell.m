@@ -15,16 +15,14 @@
 @end
 @implementation CCPPhotoAlbumTableViewCell
 
+
 - (void)awakeFromNib {
     [super awakeFromNib];
 }
 
 + (instancetype)initWithTableview:(UITableView *)tableview {
-    
     static NSString *coverCell = @"coverCell";
-    
     CCPPhotoAlbumTableViewCell *cell = [tableview dequeueReusableCellWithIdentifier:coverCell];
-    
     if (cell == nil) {
         cell = [[CCPPhotoAlbumTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:coverCell];
     }
@@ -32,7 +30,6 @@
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-    
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         [self setUpUI];
     }
