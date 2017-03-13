@@ -30,7 +30,6 @@
     self.iconImageView.alpha = 0.9f;
     //设置字体样式
     self.englishNameLabel.font = [UIFont fontWithName:@"Zapfino" size:16];
-    
     //UIKIT_EXTERN const CGFloat UIFontWeightThin NS_AVAILABLE_IOS(8_2); 字体变细
     self.appNameLabel.font = [UIFont systemFontOfSize:22 weight:UIFontWeightThin];
 }
