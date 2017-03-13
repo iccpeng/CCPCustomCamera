@@ -34,6 +34,7 @@
     self.appNameLabel.font = [UIFont systemFontOfSize:22 weight:UIFontWeightThin];
 }
 
+
 //相机
 - (IBAction)takeApictures:(UIButton *)sender {
     
