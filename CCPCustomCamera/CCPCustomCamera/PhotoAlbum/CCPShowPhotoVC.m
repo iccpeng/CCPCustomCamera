@@ -169,7 +169,6 @@
         return collectionCell;
 }
 
-
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     XLPhotoBrowser *browser = [XLPhotoBrowser showPhotoBrowserWithImages:self.imageArray currentImageIndex:indexPath.row];
     browser.browserStyle = XLPhotoBrowserStylePageControl;
