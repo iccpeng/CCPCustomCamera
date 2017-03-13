@@ -161,9 +161,9 @@ XLPhotoBrowser下载地址:[https://github.com/Shannoon/XLPhotoBrowser](https://
 
 在这里对框架作者表示感谢!
 
-3.自定义相册图片展示
+4.自定义相册图片展示
 
-4.GPUImage的简单使用
+5.GPUImage的简单使用
 ####四、参考:
 
 a.[http://kayosite.com/ios-development-and-detail-of-photo-framework.html](http://kayosite.com/ios-development-and-detail-of-photo-framework.html)
